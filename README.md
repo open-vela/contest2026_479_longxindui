@@ -89,7 +89,7 @@ repo sync -c -j8
 sudo tar xf loongarch64-linux-gnu-gcc13.3.tar.gz -C /opt
 ```
 
-再复制编译脚本（在 openvela根目录进行 ）：
+再复制编译脚本（在 openvela 根目录进行 ）：
 
 ```bash
 cp vendor/loongson/help.sh .
