@@ -40,9 +40,9 @@
 
 | LED | GPIO 编号 | 电平驱动 | 说明 |
 |-----|----------|---------|------|
-| 红色 LED | GPIO72 | 高电平亮 | 可作 GPIO LED |
-| 绿色 LED | GPIO73 | 高电平亮 | 可作 GPIO LED |
-| 蓝色 LED | GPIO88 | 高电平亮 | ⚠️ 已分配给硬件 PWM2 |
+| 红色 LED | GPIO72 | 低电平亮 | 可作 GPIO LED |
+| 绿色 LED | GPIO73 | 低电平亮 | 可作 GPIO LED |
+| 蓝色 LED | GPIO88 | 低电平亮 | ⚠️ 已分配给硬件 PWM2 |
 
 > ⚠️ GPIO88 同时是蓝色 LED 和 PWM2 输出引脚。使用硬件 PWM 时，
 > 不能同时将 GPIO88 作为 GPIO LED 控制。
@@ -97,7 +97,7 @@
 | CFG1 | 0x20 | 配置 1（DSIZE, CPOL, CPHA） |
 | CFG2 | 0x24 | 配置 2（波特率分频） |
 | CFG3 | 0x28 | 配置 3（MSTR, DIE, DOE, SSMODE） |
-| DR | 0x40 | 数据寄存器 |
+| DR | 0x40 | 数据寄存器（⚠️ 8 位访问，其余寄存器 32 位） |
 
 ### 2.4 I2C1 控制器寄存器
 
@@ -187,9 +187,10 @@ void ls2k300_hardware_init(void)
 /* 物理地址转非缓存地址 */
 #define PHYS_TO_UNCACHED(addr)  (0x8000000000000000UL | (addr))
 
-/* SPI2 寄存器访问 */
+/* SPI2 寄存器访问（DR 数据寄存器用 8 位，其余用 32 位） */
 #define SPI2_BASE               (0x8000000000000000UL | 0x1610c000UL)
 #define SPI_REG32(off)          (*(volatile uint32_t *)(SPI2_BASE + (off)))
+#define SPI_REG8(off)           (*(volatile uint8_t  *)(SPI2_BASE + (off)))
 
 /* I2C1 寄存器访问 */
 #define I2C1_BASE               (0x8000000000000000UL | 0x16109000UL)

@@ -1,4 +1,4 @@
-# ls2k300 openvela通用测试结果
+# ls2k0300 openvela通用测试结果
 
 # 1 功能测试
 
@@ -59,7 +59,7 @@ nxtask_exit: cmocka_mm_test pid=4,TCB=0x900000009806e880
 
 ##### cmocka\_mm\_test启用配置：
 
-在nuttx/boards/loongarch/ls2k300/hummingbird\-ls2k300/configs/nsh/defconfig中添加：
+在nuttx/boards/loongarch/ls2k0300/hummingbird\-ls2k0300/configs/nsh/defconfig中添加：
 
 CONFIG\_ALLOW\_MIT\_COMPONENTS=y
 
@@ -90,6 +90,8 @@ CONFIG\_CM\_KVDB\_TEST=y
 CONFIG\_CM\_SOCKET\_TEST=y
 
 CONFIG\_CM\_DFX\_TEST=y
+
+
 
 #### 1\.1\.2 系统调度测试
 
@@ -1467,7 +1469,7 @@ nxtask_exit: cmocka_sched_test pid=8,TCB=0x900000009806e880
 
 ##### cmocka\_sched\_test启用配置：
 
-在nuttx/boards/loongarch/ls2k300/hummingbird\-ls2k300/configs/nsh/defconfig中添加：
+在nuttx/boards/loongarch/ls2k300/hummingbird\-ls2k0300/configs/nsh/defconfig中添加：
 
 CONFIG\_ALLOW\_MIT\_COMPONENTS=y
 
@@ -1499,13 +1501,266 @@ CONFIG\_CM\_SOCKET\_TEST=y
 
 CONFIG\_CM\_DFX\_TEST=y
 
+
+
 #### 1\.1\.3 系统调用测试
 
-##### 未测：set\_jmp
+##### 成功
 
 指令：cmocka\_syscall\_test
 
 日志：
+
+```YAML
+nsh> cmocka_syscall_test
+nxtask_activate: cmocka_syscall_test pid=5,TCB=0x90000000980d0e20
+nxsig_tcbdispatch: TCB=0x90000000980d0e20 pid=5 signo=0 code=0 value=0 masked=NO
+[==========] nuttx_syscall_test_suites: Running 83 test(s).
+[ RUN      ] test_nuttx_syscall_chdir01
+[       OK ] test_nuttx_syscall_chdir01
+[ RUN      ] test_nuttx_syscall_chdir02
+[       OK ] test_nuttx_syscall_chdir02
+[ RUN      ] test_nuttx_syscall_getitimer01
+clock_getres: clock_id=6, clock_type=6
+[       OK ] test_nuttx_syscall_getitimer01
+[ RUN      ] test_nuttx_syscall_clockgettime01
+[       OK ] test_nuttx_syscall_clockgettime01
+[ RUN      ] test_nuttx_syscall_clocknanosleep01
+[       OK ] test_nuttx_syscall_clocknanosleep01
+[ RUN      ] test_nuttx_syscall_clocksettime01
+[       OK ] test_nuttx_syscall_clocksettime01
+[ RUN      ] test_nuttx_syscall_close01
+[       OK ] test_nuttx_syscall_close01
+[ RUN      ] test_nuttx_syscall_close02
+[       OK ] test_nuttx_syscall_close02
+[ RUN      ] test_nuttx_syscall_close03
+[       OK ] test_nuttx_syscall_close03
+[ RUN      ] test_nuttx_syscall_creat01
+[       OK ] test_nuttx_syscall_creat01
+[ RUN      ] test_nuttx_syscall_creat02
+[       OK ] test_nuttx_syscall_creat02
+[ RUN      ] test_nuttx_syscall_fcntl02
+[       OK ] test_nuttx_syscall_fcntl02
+[ RUN      ] test_nuttx_syscall_fcntl03
+[       OK ] test_nuttx_syscall_fcntl03
+[ RUN      ] test_nuttx_syscall_fcntl04
+[       OK ] test_nuttx_syscall_fcntl04
+[ RUN      ] test_nuttx_syscall_fcntl06
+[       OK ] test_nuttx_syscall_fcntl06
+[ RUN      ] test_nuttx_syscall_fstatfs01
+[       OK ] test_nuttx_syscall_fstatfs01
+[ RUN      ] test_nuttx_syscall_fsync01
+[       OK ] test_nuttx_syscall_fsync01
+[ RUN      ] test_nuttx_syscall_fsync02
+[       OK ] test_nuttx_syscall_fsync02
+[ RUN      ] test_nuttx_syscall_fsync03
+[       OK ] test_nuttx_syscall_fsync03
+[ RUN      ] test_nuttx_syscall_getpeername01
+[       OK ] test_nuttx_syscall_getpeername01
+[ RUN      ] test_nuttx_syscall_getsockopt01
+[       OK ] test_nuttx_syscall_getsockopt01
+[ RUN      ] test_nuttx_syscall_setsockopt01
+[       OK ] test_nuttx_syscall_setsockopt01
+[ RUN      ] test_nuttx_syscall_listen01
+listen(-400, 0) failed
+bad file descriptor successful
+listen(3, 0) failed
+not a socket successful
+listen(4, 0) failed
+UDP listen successful
+[       OK ] test_nuttx_syscall_listen01
+[ RUN      ] test_nuttx_syscall_socketpair02
+[       OK ] test_nuttx_syscall_socketpair02
+[ RUN      ] test_nuttx_syscall_ftruncate01
+[       OK ] test_nuttx_syscall_ftruncate01
+[ RUN      ] test_nuttx_syscall_getcwd01
+[       OK ] test_nuttx_syscall_getcwd01
+[ RUN      ] test_nuttx_syscall_getcwd02
+[       OK ] test_nuttx_syscall_getcwd02
+[ RUN      ] test_nuttx_syscall_getpid01
+[       OK ] test_nuttx_syscall_getpid01
+[ RUN      ] test_nuttx_syscall_getppid01
+[       OK ] test_nuttx_syscall_getppid01
+[ RUN      ] test_nuttx_syscall_gethostname01
+[       OK ] test_nuttx_syscall_gethostname01
+[ RUN      ] test_nuttx_syscall_gettimeofday01
+nxsig_notification: pid=5 signo=14 code=2 sival_ptr=0x90000000980adc50
+nxsig_tcbdispatch: TCB=0x90000000980d0e20 pid=5 signo=14 code=2 value=-1744118704 masked=NO
+up_schedule_sigaction: tcb=0x90000000980d0e20, rtcb=0x90000000980abb38 current_regs=0x90000000987ffe90
+loongarch_sigdeliver: rtcb=0x90000000980d0e20 sigdeliver=0x900000009801218c sigpendactionq.head=0x90000000980ad5f0
+nxsig_deliver: Deliver signal 14 to PID 5
+loongarch_sigdeliver: Resuming EPC: 900000009801ee08 INT_CTX: 0000000000000000
+[       OK ] test_nuttx_syscall_gettimeofday01
+[ RUN      ] test_nuttx_syscall_lseek01
+[       OK ] test_nuttx_syscall_lseek01
+[ RUN      ] test_nuttx_syscall_lseek07
+[       OK ] test_nuttx_syscall_lseek07
+[ RUN      ] test_nuttx_syscall_lstat01
+[       OK ] test_nuttx_syscall_lstat01
+[ RUN      ] test_nuttx_syscall_dup01
+[       OK ] test_nuttx_syscall_dup01
+[ RUN      ] test_nuttx_syscall_dup02
+[       OK ] test_nuttx_syscall_dup02
+[ RUN      ] test_nuttx_syscall_dup03
+[       OK ] test_nuttx_syscall_dup03
+[ RUN      ] test_nuttx_syscall_dup04
+[       OK ] test_nuttx_syscall_dup04
+[ RUN      ] test_nuttx_syscall_dup05
+[       OK ] test_nuttx_syscall_dup05
+[ RUN      ] test_nuttx_syscall_dup201
+[       OK ] test_nuttx_syscall_dup201
+[ RUN      ] test_nuttx_syscall_dup202
+[       OK ] test_nuttx_syscall_dup202
+[ RUN      ] test_nuttx_syscall_fpathconf01
+[       OK ] test_nuttx_syscall_fpathconf01
+[ RUN      ] test_nuttx_syscall_getegid01
+[       OK ] test_nuttx_syscall_getegid01
+[ RUN      ] test_nuttx_syscall_getegid02
+[       OK ] test_nuttx_syscall_getegid02
+[ RUN      ] test_nuttx_syscall_geteuid01
+[       OK ] test_nuttx_syscall_geteuid01
+[ RUN      ] test_nuttx_syscall_getgid01
+[       OK ] test_nuttx_syscall_getgid01
+[ RUN      ] test_nuttx_syscall_getgid02
+[       OK ] test_nuttx_syscall_getgid02
+[ RUN      ] test_nuttx_syscall_getuid01
+[       OK ] test_nuttx_syscall_getuid01
+[ RUN      ] test_nuttx_syscall_pathconf01
+[       OK ] test_nuttx_syscall_pathconf01
+[ RUN      ] test_nuttx_syscall_pipe01
+[       OK ] test_nuttx_syscall_pipe01
+[ RUN      ] test_nuttx_syscall_pipe02
+[       OK ] test_nuttx_syscall_pipe02
+[ RUN      ] test_nuttx_syscall_pread01
+[       OK ] test_nuttx_syscall_pread01
+[ RUN      ] test_nuttx_syscall_pwrite01
+[       OK ] test_nuttx_syscall_pwrite01
+[ RUN      ] test_nuttx_syscall_pwrite02
+[       OK ] test_nuttx_syscall_pwrite02
+[ RUN      ] test_nuttx_syscall_rmdir01
+[       OK ] test_nuttx_syscall_rmdir01
+[ RUN      ] test_nuttx_syscall_rmdir02
+[       OK ] test_nuttx_syscall_rmdir02
+[ RUN      ] test_nuttx_syscall_truncate01
+[       OK ] test_nuttx_syscall_truncate01
+[ RUN      ] test_nuttx_syscall_unlink01
+[       OK ] test_nuttx_syscall_unlink01
+[ RUN      ] test_nuttx_syscall_nansleep01
+[       OK ] test_nuttx_syscall_nansleep01
+[ RUN      ] test_nuttx_syscall_nansleep02
+[       OK ] test_nuttx_syscall_nansleep02
+[ RUN      ] test_nuttx_syscall_time01
+[       OK ] test_nuttx_syscall_time01
+[ RUN      ] test_nuttx_syscall_time02
+[       OK ] test_nuttx_syscall_time02
+[ RUN      ] test_nuttx_syscall_timercreate01
+[       OK ] test_nuttx_syscall_timercreate01
+[ RUN      ] test_nuttx_syscall_timerdelete01
+[       OK ] test_nuttx_syscall_timerdelete01
+[ RUN      ] test_nuttx_syscall_timergettime01
+[       OK ] test_nuttx_syscall_timergettime01
+[ RUN      ] test_nuttx_syscall_mkdir01
+[       OK ] test_nuttx_syscall_mkdir01
+[ RUN      ] test_nuttx_syscall_mkdir02
+[       OK ] test_nuttx_syscall_mkdir02
+[ RUN      ] test_nuttx_syscall_mkdir03
+[       OK ] test_nuttx_syscall_mkdir03
+[ RUN      ] test_nuttx_syscall_sched01
+[       OK ] test_nuttx_syscall_sched01
+[ RUN      ] test_nuttx_syscall_sched02
+[       OK ] test_nuttx_syscall_sched02
+[ RUN      ] test_nuttx_syscall_sched03
+[       OK ] test_nuttx_syscall_sched03
+[ RUN      ] test_nuttx_syscall_sched04
+[       OK ] test_nuttx_syscall_sched04
+[ RUN      ] test_nuttx_syscall_write01
+[       OK ] test_nuttx_syscall_write01
+[ RUN      ] test_nuttx_syscall_write02
+[       OK ] test_nuttx_syscall_write02
+[ RUN      ] test_nuttx_syscall_write03
+[       OK ] test_nuttx_syscall_write03
+[ RUN      ] test_nuttx_syscall_read01
+[       OK ] test_nuttx_syscall_read01
+[ RUN      ] test_nuttx_syscall_read02
+[       OK ] test_nuttx_syscall_read02
+[ RUN      ] test_nuttx_syscall_read03
+[       OK ] test_nuttx_syscall_read03
+[ RUN      ] test_nuttx_syscall_read04
+[       OK ] test_nuttx_syscall_read04
+[ RUN      ] test_nuttx_syscall_symlink01
+[       OK ] test_nuttx_syscall_symlink01
+[ RUN      ] test_nuttx_syscall_symlink02
+[       OK ] test_nuttx_syscall_symlink02
+[ RUN      ] test_nuttx_syscall_sockettest01
+NO.1 do socket() test, ret=-1  erron=22 experrno=97
+NO.2 do socket() test, ret=-1  erron=93 experrno=97
+NO.3 do socket() test, ret=-1  erron=93 experrno=97
+NO.4 do socket() test, ret=-1  erron=93 experrno=97
+NO.6 do socket() test, ret=-1  erron=93 experrno=97
+[       OK ] test_nuttx_syscall_sockettest01
+[ RUN      ] test_nuttx_syscall_sockettest02
+[       OK ] test_nuttx_syscall_sockettest02
+[==========] nuttx_syscall_test_suites: 83 test(s) run.
+[  PASSED  ] 83 test(s).
+nxsig_tcbdispatch: TCB=0x90000000980cabd0 pid=3 signo=17 code=5 value=0 masked=NO
+nxtask_exit: cmocka_syscall_test pid=5,TCB=0x90000000980d0e20
+nsh>
+
+```
+
+##### cmocka\_syscall\_test 启用配置：
+
+在nuttx/boards/loongarch/ls2k0300/hummingbird\-ls2k0300/configs/nsh/defconfig中添加：
+
+CONFIG\_ALLOW\_MIT\_COMPONENTS=y
+
+CONFIG\_LIBC\_EXECFUNCS=y
+
+CONFIG\_LIBC\_REGEX=y
+
+CONFIG\_TESTING\_CMOCKA=y
+
+CONFIG\_TESTS\_TESTSUITES=y
+
+CONFIG\_TESTS\_TESTSUITES\_STACKSIZE=16384
+
+CONFIG\_CM\_SYSCALL\_TEST=y
+
+CONFIG\_FS\_TMPFS=y
+
+CONFIG\_FS\_LINKS=y
+
+CONFIG\_ARCH\_SETJMP\_H=y
+
+CONFIG\_BUILTIN=y
+
+CONFIG\_NSH\_BUILTIN\_APPS=y
+
+CONFIG\_FAT\_LFN=y
+
+CONFIG\_IOB\_NBUFFERS=128
+
+CONFIG\_IOB\_NCHAINS=4
+
+CONFIG\_NET=y
+
+CONFIG\_NETDEV\_LATEINIT=y
+
+CONFIG\_NET\_ICMP=y
+
+CONFIG\_NET\_LOCAL=y
+
+CONFIG\_NET\_SOCKOPTS=y
+
+CONFIG\_NET\_TCP=y
+
+CONFIG\_NET\_UDP=y
+
+CONFIG\_PSEUDOFS\_SOFTLINKS=y
+
+CONFIG\_SCHED\_HAVE\_PARENT=y
+
+CONFIG\_SCHED\_LPWORK=y
 
 
 
@@ -3290,7 +3545,7 @@ Scanf tests done... OK: 94, FAILED: 2
 
 ##### scanftest 启用配置：
 
-在nuttx/boards/loongarch/ls2k300/hummingbird\-ls2k300/configs/nsh/defconfig中添加：
+在nuttx/boards/loongarch/ls2k0300/hummingbird\-ls2k0300/configs/nsh/defconfig中添加：
 
 CONFIG\_LIBC\_SCANSET=y
 
@@ -3386,7 +3641,7 @@ The shell has already exited (and exit status is not available)
 
 ##### popen 启用配置：
 
-在nuttx/boards/loongarch/ls2k300/hummingbird\-ls2k300/configs/nsh/defconfig中添加：
+在nuttx/boards/loongarch/ls2k0300/hummingbird\-ls2k0300/configs/nsh/defconfig中添加：
 
 CONFIG\_PIPES=y
 
@@ -3723,7 +3978,7 @@ nxtask_activate: cmocka_hash pid=6,TCB=0x90000000980709e0
 
 ##### md5 启用配置：
 
-在nuttx/boards/loongarch/ls2k300/hummingbird\-ls2k300/configs/nsh/defconfig中添加：
+在nuttx/boards/loongarch/ls2k0300/hummingbird\-ls2k0300/configs/nsh/defconfig中添加：
 
 CONFIG\_TESTS\_TESTCASES=y
 
@@ -3786,7 +4041,7 @@ extend
 
 ##### cxxtest 启用配置：
 
-在nuttx/boards/loongarch/ls2k300/hummingbird\-ls2k300/configs/nsh/defconfig中添加：
+在nuttx/boards/loongarch/ls2k0300/hummingbird\-ls2k0300/configs/nsh/defconfig中添加：
 
 CONFIG\_HAVE\_CXX=y
 
@@ -4343,7 +4598,7 @@ mkrd 1024
 
 ##### mkrd 启用配置：
 
-在nuttx/boards/loongarch/ls2k300/hummingbird\-ls2k300/configs/nsh/defconfig中添加：
+在nuttx/boards/loongarch/ls2k0300/hummingbird\-ls2k0300/configs/nsh/defconfig中添加：
 
 CONFIG\_TESTING\_CMOCKA=y
 
@@ -6335,7 +6590,875 @@ nx_start: Entry
 
 ##### 通过
 
-日志：
+指令：showinfo \-i 60
 
+日志：日志过大无法完全放入
 
+```YAML
+[2026-09-18 21:25:11] nsh> showinfo -i 60
+[2026-09-18 21:25:11] task_spawn: name=showinfo entry=0x900000009804a630 file_actions=0x9000000098095bb8 attr=0x9000000098095bc0 argv=0x9000000098095d58
+[2026-09-18 21:25:11] nxtask_activate: showinfo pid=4,TCB=0x90000000980997e0
+[2026-09-18 21:25:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:25:11]     7663368      34342    7629026      35075    7629026    163      1*float*
+[2026-09-18 21:25:11] 
+[2026-09-18 21:26:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:26:11]     7663368      34341    7629027      35073    7629027    163      1*float*
+[2026-09-18 21:26:11] 
+[2026-09-18 21:27:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:27:11]     7663368      34342    7629026      35064    7629026    163      1*float*
+[2026-09-18 21:27:11] 
+[2026-09-18 21:28:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:28:11]     7663368      34344    7629024      35074    7629024    163      1*float*
+[2026-09-18 21:28:11] 
+[2026-09-18 21:29:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:29:11]     7663368      34346    7629022      35074    7629022    163      1*float*
+[2026-09-18 21:29:11] 
+[2026-09-18 21:30:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:30:11]     7663368      34342    7629026      35080    7629026    163      1*float*
+[2026-09-18 21:30:11] 
+[2026-09-18 21:31:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:31:11]     7663368      34343    7629025      35066    7629025    163      1*float*
+[2026-09-18 21:31:11] 
+[2026-09-18 21:32:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:32:11]     7663368      34341    7629027      35067    7629027    163      1*float*
+[2026-09-18 21:32:11] 
+[2026-09-18 21:33:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:33:11]     7663368      34346    7629022      35070    7629022    163      1*float*
+[2026-09-18 21:33:11] 
+[2026-09-18 21:34:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:34:11]     7663368      34341    7629027      35079    7629027    163      1*float*
+[2026-09-18 21:34:11] 
+[2026-09-18 21:35:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:35:11]     7663368      34341    7629027      35072    7629027    163      1*float*
+[2026-09-18 21:35:11] 
+[2026-09-18 21:36:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:36:11]     7663368      34344    7629024      35065    7629024    163      1*float*
+[2026-09-18 21:36:11] 
+[2026-09-18 21:37:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:37:11]     7663368      34341    7629027      35078    7629027    163      1*float*
+[2026-09-18 21:37:11] 
+[2026-09-18 21:38:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:38:11]     7663368      34346    7629022      35079    7629022    163      1*float*
+[2026-09-18 21:38:11] 
+[2026-09-18 21:39:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:39:11]     7663368      34346    7629022      35080    7629022    163      1*float*
+[2026-09-18 21:39:11] 
+[2026-09-18 21:40:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:40:11]     7663368      34346    7629022      35080    7629022    163      1*float*
+[2026-09-18 21:40:11] 
+[2026-09-18 21:41:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:41:11]     7663368      34341    7629027      35067    7629027    163      1*float*
+[2026-09-18 21:41:11] 
+[2026-09-18 21:42:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:42:11]     7663368      34343    7629025      35068    7629025    163      1*float*
+[2026-09-18 21:42:11] 
+[2026-09-18 21:43:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:43:11]     7663368      34347    7629021      35064    7629021    163      1*float*
+[2026-09-18 21:43:11] 
+[2026-09-18 21:44:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:44:11]     7663368      34342    7629026      35080    7629026    163      1*float*
+[2026-09-18 21:44:11] 
+[2026-09-18 21:45:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:45:11]     7663368      34342    7629026      35067    7629026    163      1*float*
+[2026-09-18 21:45:11] 
+[2026-09-18 21:46:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:46:11]     7663368      34341    7629027      35072    7629027    163      1*float*
+[2026-09-18 21:46:11] 
+[2026-09-18 21:47:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:47:11]     7663368      34342    7629026      35072    7629026    163      1*float*
+[2026-09-18 21:47:11] 
+[2026-09-18 21:48:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:48:11]     7663368      34341    7629027      35078    7629027    163      1*float*
+[2026-09-18 21:48:11] 
+[2026-09-18 21:49:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:49:11]     7663368      34343    7629025      35066    7629025    163      1*float*
+[2026-09-18 21:49:11] 
+[2026-09-18 21:50:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:50:11]     7663368      34345    7629023      35070    7629023    163      1*float*
+[2026-09-18 21:50:11] 
+[2026-09-18 21:51:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:51:11]     7663368      34344    7629024      35072    7629024    163      1*float*
+[2026-09-18 21:51:11] 
+[2026-09-18 21:52:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:52:11]     7663368      34347    7629021      35080    7629021    163      1*float*
+[2026-09-18 21:52:11] 
+[2026-09-18 21:53:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:53:11]     7663368      34344    7629024      35071    7629024    163      1*float*
+[2026-09-18 21:53:11] 
+[2026-09-18 21:54:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:54:11]     7663368      34343    7629025      35064    7629025    163      1*float*
+[2026-09-18 21:54:11] 
+[2026-09-18 21:55:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:55:11]     7663368      34347    7629021      35068    7629021    163      1*float*
+[2026-09-18 21:55:11] 
+[2026-09-18 21:56:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:56:11]     7663368      34345    7629023      35075    7629023    163      1*float*
+[2026-09-18 21:56:11] 
+[2026-09-18 21:57:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:57:11]     7663368      34341    7629027      35070    7629027    163      1*float*
+[2026-09-18 21:57:11] 
+[2026-09-18 21:58:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:58:11]     7663368      34342    7629026      35075    7629026    163      1*float*
+[2026-09-18 21:58:11] 
+[2026-09-18 21:59:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 21:59:11]     7663368      34346    7629022      35079    7629022    163      1*float*
+[2026-09-18 21:59:11] 
+[2026-09-18 22:00:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:00:11]     7663368      34341    7629027      35073    7629027    163      1*float*
+[2026-09-18 22:00:11] 
+[2026-09-18 22:01:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:01:11]     7663368      34346    7629022      35078    7629022    163      1*float*
+[2026-09-18 22:01:11] 
+[2026-09-18 22:02:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:02:11]     7663368      34342    7629026      35078    7629026    163      1*float*
+[2026-09-18 22:02:11] 
+[2026-09-18 22:03:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:03:11]     7663368      34341    7629027      35071    7629027    163      1*float*
+[2026-09-18 22:03:11] 
+[2026-09-18 22:04:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:04:11]     7663368      34344    7629024      35070    7629024    163      1*float*
+[2026-09-18 22:04:11] 
+[2026-09-18 22:05:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:05:11]     7663368      34347    7629021      35077    7629021    163      1*float*
+[2026-09-18 22:05:11] 
+[2026-09-18 22:06:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:06:11]     7663368      34347    7629021      35074    7629021    163      1*float*
+[2026-09-18 22:06:11] 
+[2026-09-18 22:07:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:07:11]     7663368      34343    7629025      35072    7629025    163      1*float*
+[2026-09-18 22:07:11] 
+[2026-09-18 22:08:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:08:11]     7663368      34347    7629021      35077    7629021    163      1*float*
+[2026-09-18 22:08:11] 
+[2026-09-18 22:09:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:09:11]     7663368      34342    7629026      35065    7629026    163      1*float*
+[2026-09-18 22:09:11] 
+[2026-09-18 22:10:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:10:11]     7663368      34345    7629023      35077    7629023    163      1*float*
+[2026-09-18 22:10:11] 
+[2026-09-18 22:11:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:11:11]     7663368      34345    7629023      35072    7629023    163      1*float*
+[2026-09-18 22:11:11] 
+[2026-09-18 22:12:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:12:11]     7663368      34344    7629024      35069    7629024    163      1*float*
+[2026-09-18 22:12:11] 
+[2026-09-18 22:13:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:13:11]     7663368      34345    7629023      35078    7629023    163      1*float*
+[2026-09-18 22:13:11] 
+[2026-09-18 22:14:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:14:11]     7663368      34346    7629022      35080    7629022    163      1*float*
+[2026-09-18 22:14:11] 
+[2026-09-18 22:15:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:15:11]     7663368      34342    7629026      35069    7629026    163      1*float*
+[2026-09-18 22:15:11] 
+[2026-09-18 22:16:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:16:11]     7663368      34347    7629021      35065    7629021    163      1*float*
+[2026-09-18 22:16:11] 
+[2026-09-18 22:17:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:17:11]     7663368      34344    7629024      35064    7629024    163      1*float*
+[2026-09-18 22:17:11] 
+[2026-09-18 22:18:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:18:11]     7663368      34345    7629023      35075    7629023    163      1*float*
+[2026-09-18 22:18:11] 
+[2026-09-18 22:19:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:19:11]     7663368      34346    7629022      35071    7629022    163      1*float*
+[2026-09-18 22:19:11] 
+[2026-09-18 22:20:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:20:11]     7663368      34341    7629027      35079    7629027    163      1*float*
+[2026-09-18 22:20:11] 
+[2026-09-18 22:21:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:21:11]     7663368      34342    7629026      35080    7629026    163      1*float*
+[2026-09-18 22:21:11] 
+[2026-09-18 22:22:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:22:11]     7663368      34347    7629021      35066    7629021    163      1*float*
+[2026-09-18 22:22:11] 
+[2026-09-18 22:23:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:23:11]     7663368      34343    7629025      35074    7629025    163      1*float*
+[2026-09-18 22:23:11] 
+[2026-09-18 22:24:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:24:11]     7663368      34344    7629024      35066    7629024    163      1*float*
+[2026-09-18 22:24:11] 
+[2026-09-18 22:25:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:25:11]     7663368      34341    7629027      35080    7629027    163      1*float*
+[2026-09-18 22:25:11] 
+[2026-09-18 22:26:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:26:11]     7663368      34346    7629022      35070    7629022    163      1*float*
+[2026-09-18 22:26:11] 
+[2026-09-18 22:27:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:27:11]     7663368      34343    7629025      35066    7629025    163      1*float*
+[2026-09-18 22:27:11] 
+[2026-09-18 22:28:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:28:11]     7663368      34343    7629025      35065    7629025    163      1*float*
+[2026-09-18 22:28:11] 
+[2026-09-18 22:29:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:29:11]     7663368      34344    7629024      35077    7629024    163      1*float*
+[2026-09-18 22:29:11] 
+[2026-09-18 22:30:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:30:11]     7663368      34347    7629021      35068    7629021    163      1*float*
+[2026-09-18 22:30:11] 
+[2026-09-18 22:31:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:31:11]     7663368      34344    7629024      35075    7629024    163      1*float*
+[2026-09-18 22:31:11] 
+[2026-09-18 22:32:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:32:11]     7663368      34346    7629022      35078    7629022    163      1*float*
+[2026-09-18 22:32:11] 
+[2026-09-18 22:33:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:33:11]     7663368      34347    7629021      35068    7629021    163      1*float*
+[2026-09-18 22:33:11] 
+[2026-09-18 22:34:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:34:11]     7663368      34345    7629023      35077    7629023    163      1*float*
+[2026-09-18 22:34:11] 
+[2026-09-18 22:35:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:35:11]     7663368      34343    7629025      35079    7629025    163      1*float*
+[2026-09-18 22:35:11] 
+[2026-09-18 22:36:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:36:11]     7663368      34346    7629022      35073    7629022    163      1*float*
+[2026-09-18 22:36:11] 
+[2026-09-18 22:37:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:37:11]     7663368      34345    7629023      35072    7629023    163      1*float*
+[2026-09-18 22:37:11] 
+[2026-09-18 22:38:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:38:11]     7663368      34342    7629026      35078    7629026    163      1*float*
+[2026-09-18 22:38:11] 
+[2026-09-18 22:39:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:39:11]     7663368      34347    7629021      35074    7629021    163      1*float*
+[2026-09-18 22:39:11] 
+[2026-09-18 22:40:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:40:11]     7663368      34346    7629022      35071    7629022    163      1*float*
+[2026-09-18 22:40:11] 
+[2026-09-18 22:41:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:41:11]     7663368      34343    7629025      35072    7629025    163      1*float*
+[2026-09-18 22:41:11] 
+[2026-09-18 22:42:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:42:11]     7663368      34343    7629025      35072    7629025    163      1*float*
+[2026-09-18 22:42:11] 
+[2026-09-18 22:43:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:43:11]     7663368      34341    7629027      35079    7629027    163      1*float*
+[2026-09-18 22:43:11] 
+[2026-09-18 22:44:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:44:11]     7663368      34341    7629027      35069    7629027    163      1*float*
+[2026-09-18 22:44:11] 
+[2026-09-18 22:45:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:45:11]     7663368      34342    7629026      35065    7629026    163      1*float*
+[2026-09-18 22:45:11] 
+[2026-09-18 22:46:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:46:11]     7663368      34347    7629021      35071    7629021    163      1*float*
+[2026-09-18 22:46:11] 
+[2026-09-18 22:47:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:47:11]     7663368      34342    7629026      35065    7629026    163      1*float*
+[2026-09-18 22:47:11] 
+[2026-09-18 22:48:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:48:11]     7663368      34341    7629027      35071    7629027    163      1*float*
+[2026-09-18 22:48:11] 
+[2026-09-18 22:49:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:49:11]     7663368      34344    7629024      35079    7629024    163      1*float*
+[2026-09-18 22:49:11] 
+[2026-09-18 22:50:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:50:11]     7663368      34345    7629023      35079    7629023    163      1*float*
+[2026-09-18 22:50:11] 
+[2026-09-18 22:51:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:51:11]     7663368      34345    7629023      35077    7629023    163      1*float*
+[2026-09-18 22:51:11] 
+[2026-09-18 22:52:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:52:11]     7663368      34341    7629027      35070    7629027    163      1*float*
+[2026-09-18 22:52:11] 
+[2026-09-18 22:53:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:53:11]     7663368      34343    7629025      35069    7629025    163      1*float*
+[2026-09-18 22:53:11] 
+[2026-09-18 22:54:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:54:11]     7663368      34344    7629024      35077    7629024    163      1*float*
+[2026-09-18 22:54:11] 
+[2026-09-18 22:55:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:55:11]     7663368      34346    7629022      35074    7629022    163      1*float*
+[2026-09-18 22:55:11] 
+[2026-09-18 22:56:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:56:11]     7663368      34342    7629026      35067    7629026    163      1*float*
+[2026-09-18 22:56:11] 
+[2026-09-18 22:57:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:57:11]     7663368      34342    7629026      35066    7629026    163      1*float*
+[2026-09-18 22:57:11] 
+[2026-09-18 22:58:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:58:11]     7663368      34344    7629024      35074    7629024    163      1*float*
+[2026-09-18 22:58:11] 
+[2026-09-18 22:59:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 22:59:11]     7663368      34344    7629024      35066    7629024    163      1*float*
+[2026-09-18 22:59:11] 
+[2026-09-18 23:00:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:00:11]     7663368      34341    7629027      35073    7629027    163      1*float*
+[2026-09-18 23:00:11] 
+[2026-09-18 23:01:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:01:11]     7663368      34342    7629026      35066    7629026    163      1*float*
+[2026-09-18 23:01:11] 
+[2026-09-18 23:02:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:02:11]     7663368      34341    7629027      35069    7629027    163      1*float*
+[2026-09-18 23:02:11] 
+[2026-09-18 23:03:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:03:11]     7663368      34347    7629021      35065    7629021    163      1*float*
+[2026-09-18 23:03:11] 
+[2026-09-18 23:04:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:04:11]     7663368      34346    7629022      35066    7629022    163      1*float*
+[2026-09-18 23:04:11] 
+[2026-09-18 23:05:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:05:11]     7663368      34344    7629024      35072    7629024    163      1*float*
+[2026-09-18 23:05:11] 
+[2026-09-18 23:06:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:06:11]     7663368      34344    7629024      35079    7629024    163      1*float*
+[2026-09-18 23:06:11] 
+[2026-09-18 23:07:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:07:11]     7663368      34346    7629022      35079    7629022    163      1*float*
+[2026-09-18 23:07:11] 
+[2026-09-18 23:08:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:08:11]     7663368      34345    7629023      35064    7629023    163      1*float*
+[2026-09-18 23:08:11] 
+[2026-09-18 23:09:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:09:11]     7663368      34345    7629023      35067    7629023    163      1*float*
+[2026-09-18 23:09:11] 
+[2026-09-18 23:10:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:10:11]     7663368      34345    7629023      35075    7629023    163      1*float*
+[2026-09-18 23:10:11] 
+[2026-09-18 23:11:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:11:11]     7663368      34347    7629021      35079    7629021    163      1*float*
+[2026-09-18 23:11:11] 
+[2026-09-18 23:12:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:12:11]     7663368      34347    7629021      35068    7629021    163      1*float*
+[2026-09-18 23:12:11] 
+[2026-09-18 23:13:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:13:11]     7663368      34342    7629026      35080    7629026    163      1*float*
+[2026-09-18 23:13:11] 
+[2026-09-18 23:14:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:14:11]     7663368      34346    7629022      35077    7629022    163      1*float*
+[2026-09-18 23:14:11] 
+[2026-09-18 23:15:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:15:11]     7663368      34346    7629022      35066    7629022    163      1*float*
+[2026-09-18 23:15:11] 
+[2026-09-18 23:16:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:16:11]     7663368      34345    7629023      35075    7629023    163      1*float*
+[2026-09-18 23:16:11] 
+[2026-09-18 23:17:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:17:11]     7663368      34344    7629024      35077    7629024    163      1*float*
+[2026-09-18 23:17:11] 
+[2026-09-18 23:18:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:18:11]     7663368      34344    7629024      35074    7629024    163      1*float*
+[2026-09-18 23:18:11] 
+[2026-09-18 23:19:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:19:11]     7663368      34347    7629021      35073    7629021    163      1*float*
+[2026-09-18 23:19:11] 
+[2026-09-18 23:20:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:20:11]     7663368      34346    7629022      35066    7629022    163      1*float*
+[2026-09-18 23:20:11] 
+[2026-09-18 23:21:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:21:11]     7663368      34342    7629026      35066    7629026    163      1*float*
+[2026-09-18 23:21:11] 
+[2026-09-18 23:22:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:22:11]     7663368      34347    7629021      35077    7629021    163      1*float*
+[2026-09-18 23:22:11] 
+[2026-09-18 23:23:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:23:11]     7663368      34344    7629024      35072    7629024    163      1*float*
+[2026-09-18 23:23:11] 
+[2026-09-18 23:24:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:24:11]     7663368      34345    7629023      35080    7629023    163      1*float*
+[2026-09-18 23:24:11] 
+[2026-09-18 23:25:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:25:11]     7663368      34347    7629021      35065    7629021    163      1*float*
+[2026-09-18 23:25:11] 
+[2026-09-18 23:26:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:26:11]     7663368      34344    7629024      35072    7629024    163      1*float*
+[2026-09-18 23:26:11] 
+[2026-09-18 23:27:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:27:11]     7663368      34343    7629025      35071    7629025    163      1*float*
+[2026-09-18 23:27:11] 
+[2026-09-18 23:28:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:28:11]     7663368      34345    7629023      35067    7629023    163      1*float*
+[2026-09-18 23:28:11] 
+[2026-09-18 23:29:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:29:11]     7663368      34342    7629026      35064    7629026    163      1*float*
+[2026-09-18 23:29:11] 
+[2026-09-18 23:30:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:30:11]     7663368      34347    7629021      35075    7629021    163      1*float*
+[2026-09-18 23:30:11] 
+[2026-09-18 23:31:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:31:11]     7663368      34347    7629021      35074    7629021    163      1*float*
+[2026-09-18 23:31:11] 
+[2026-09-18 23:32:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:32:11]     7663368      34345    7629023      35069    7629023    163      1*float*
+[2026-09-18 23:32:11] 
+[2026-09-18 23:33:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:33:11]     7663368      34344    7629024      35076    7629024    163      1*float*
+[2026-09-18 23:33:11] 
+[2026-09-18 23:34:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:34:11]     7663368      34344    7629024      35068    7629024    163      1*float*
+[2026-09-18 23:34:11] 
+[2026-09-18 23:35:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:35:11]     7663368      34345    7629023      35070    7629023    163      1*float*
+[2026-09-18 23:35:11] 
+[2026-09-18 23:36:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:36:11]     7663368      34346    7629022      35068    7629022    163      1*float*
+[2026-09-18 23:36:11] 
+[2026-09-18 23:37:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:37:11]     7663368      34341    7629027      35071    7629027    163      1*float*
+[2026-09-18 23:37:11] 
+[2026-09-18 23:38:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:38:11]     7663368      34342    7629026      35080    7629026    163      1*float*
+[2026-09-18 23:38:11] 
+[2026-09-18 23:39:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:39:11]     7663368      34344    7629024      35077    7629024    163      1*float*
+[2026-09-18 23:39:11] 
+[2026-09-18 23:40:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:40:11]     7663368      34343    7629025      35078    7629025    163      1*float*
+[2026-09-18 23:40:11] 
+[2026-09-18 23:41:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:41:11]     7663368      34343    7629025      35064    7629025    163      1*float*
+[2026-09-18 23:41:11] 
+[2026-09-18 23:42:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:42:11]     7663368      34346    7629022      35073    7629022    163      1*float*
+[2026-09-18 23:42:11] 
+[2026-09-18 23:43:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:43:11]     7663368      34343    7629025      35071    7629025    163      1*float*
+[2026-09-18 23:43:11] 
+[2026-09-18 23:44:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:44:11]     7663368      34347    7629021      35074    7629021    163      1*float*
+[2026-09-18 23:44:11] 
+[2026-09-18 23:45:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:45:11]     7663368      34341    7629027      35068    7629027    163      1*float*
+[2026-09-18 23:45:11] 
+[2026-09-18 23:46:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:46:11]     7663368      34343    7629025      35077    7629025    163      1*float*
+[2026-09-18 23:46:11] 
+[2026-09-18 23:47:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:47:11]     7663368      34346    7629022      35079    7629022    163      1*float*
+[2026-09-18 23:47:11] 
+[2026-09-18 23:48:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:48:11]     7663368      34345    7629023      35067    7629023    163      1*float*
+[2026-09-18 23:48:11] 
+[2026-09-18 23:49:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:49:11]     7663368      34343    7629025      35064    7629025    163      1*float*
+[2026-09-18 23:49:11] 
+[2026-09-18 23:50:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:50:11]     7663368      34341    7629027      35071    7629027    163      1*float*
+[2026-09-18 23:50:11] 
+[2026-09-18 23:51:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:51:11]     7663368      34344    7629024      35068    7629024    163      1*float*
+[2026-09-18 23:51:11] 
+[2026-09-18 23:52:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:52:11]     7663368      34344    7629024      35078    7629024    163      1*float*
+[2026-09-18 23:52:11] 
+[2026-09-18 23:53:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:53:11]     7663368      34345    7629023      35079    7629023    163      1*float*
+[2026-09-18 23:53:11] 
+[2026-09-18 23:54:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:54:11]     7663368      34342    7629026      35068    7629026    163      1*float*
+[2026-09-18 23:54:11] 
+[2026-09-18 23:55:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:55:11]     7663368      34347    7629021      35070    7629021    163      1*float*
+[2026-09-18 23:55:11] 
+[2026-09-18 23:56:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:56:11]     7663368      34347    7629021      35067    7629021    163      1*float*
+[2026-09-18 23:56:11] 
+[2026-09-18 23:57:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:57:11]     7663368      34346    7629022      35070    7629022    163      1*float*
+[2026-09-18 23:57:11] 
+[2026-09-18 23:58:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:58:11]     7663368      34345    7629023      35070    7629023    163      1*float*
+[2026-09-18 23:58:11] 
+[2026-09-18 23:59:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-18 23:59:11]     7663368      34345    7629023      35069    7629023    163      1*float*
+[2026-09-18 23:59:11] 
+[2026-09-19 00:00:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:00:11]     7663368      34344    7629024      35070    7629024    163      1*float*
+[2026-09-19 00:00:11] 
+[2026-09-19 00:01:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:01:11]     7663368      34347    7629021      35066    7629021    163      1*float*
+[2026-09-19 00:01:11] 
+[2026-09-19 00:02:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:02:11]     7663368      34344    7629024      35068    7629024    163      1*float*
+[2026-09-19 00:02:11] 
+[2026-09-19 00:03:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:03:11]     7663368      34342    7629026      35076    7629026    163      1*float*
+[2026-09-19 00:03:11] 
+[2026-09-19 00:04:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:04:11]     7663368      34342    7629026      35073    7629026    163      1*float*
+[2026-09-19 00:04:11] 
+[2026-09-19 00:05:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:05:11]     7663368      34343    7629025      35065    7629025    163      1*float*
+[2026-09-19 00:05:11] 
+[2026-09-19 00:06:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:06:11]     7663368      34346    7629022      35078    7629022    163      1*float*
+[2026-09-19 00:06:11] 
+[2026-09-19 00:07:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:07:11]     7663368      34344    7629024      35079    7629024    163      1*float*
+[2026-09-19 00:07:11] 
+[2026-09-19 00:08:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:08:11]     7663368      34345    7629023      35076    7629023    163      1*float*
+[2026-09-19 00:08:11] 
+[2026-09-19 00:09:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:09:11]     7663368      34343    7629025      35071    7629025    163      1*float*
+[2026-09-19 00:09:11] 
+[2026-09-19 00:10:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:10:11]     7663368      34342    7629026      35069    7629026    163      1*float*
+[2026-09-19 00:10:11] 
+[2026-09-19 00:11:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:11:11]     7663368      34343    7629025      35068    7629025    163      1*float*
+[2026-09-19 00:11:11] 
+[2026-09-19 00:12:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:12:11]     7663368      34342    7629026      35067    7629026    163      1*float*
+[2026-09-19 00:12:11] 
+[2026-09-19 00:13:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:13:11]     7663368      34345    7629023      35064    7629023    163      1*float*
+[2026-09-19 00:13:11] 
+[2026-09-19 00:14:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:14:11]     7663368      34347    7629021      35067    7629021    163      1*float*
+[2026-09-19 00:14:11] 
+[2026-09-19 00:15:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:15:11]     7663368      34341    7629027      35080    7629027    163      1*float*
+[2026-09-19 00:15:11] 
+[2026-09-19 00:16:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:16:11]     7663368      34342    7629026      35068    7629026    163      1*float*
+[2026-09-19 00:16:11] 
+[2026-09-19 00:17:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:17:11]     7663368      34341    7629027      35078    7629027    163      1*float*
+[2026-09-19 00:17:11] 
+[2026-09-19 00:18:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:18:11]     7663368      34345    7629023      35079    7629023    163      1*float*
+[2026-09-19 00:18:11] 
+[2026-09-19 00:19:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:19:11]     7663368      34344    7629024      35079    7629024    163      1*float*
+[2026-09-19 00:19:11] 
+[2026-09-19 00:20:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:20:11]     7663368      34343    7629025      35070    7629025    163      1*float*
+[2026-09-19 00:20:11] 
+[2026-09-19 00:21:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:21:11]     7663368      34344    7629024      35065    7629024    163      1*float*
+[2026-09-19 00:21:11] 
+[2026-09-19 00:22:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:22:11]     7663368      34344    7629024      35066    7629024    163      1*float*
+[2026-09-19 00:22:11] 
+[2026-09-19 00:23:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:23:11]     7663368      34344    7629024      35070    7629024    163      1*float*
+[2026-09-19 00:23:11] 
+[2026-09-19 00:24:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:24:11]     7663368      34343    7629025      35073    7629025    163      1*float*
+[2026-09-19 00:24:11] 
+[2026-09-19 00:25:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:25:11]     7663368      34343    7629025      35078    7629025    163      1*float*
+[2026-09-19 00:25:11] 
+[2026-09-19 00:26:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:26:11]     7663368      34345    7629023      35074    7629023    163      1*float*
+[2026-09-19 00:26:11] 
+[2026-09-19 00:27:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:27:11]     7663368      34344    7629024      35065    7629024    163      1*float*
+[2026-09-19 00:27:11] 
+[2026-09-19 00:28:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:28:11]     7663368      34345    7629023      35070    7629023    163      1*float*
+[2026-09-19 00:28:11] 
+[2026-09-19 00:29:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:29:11]     7663368      34345    7629023      35067    7629023    163      1*float*
+[2026-09-19 00:29:11] 
+[2026-09-19 00:30:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:30:11]     7663368      34343    7629025      35073    7629025    163      1*float*
+[2026-09-19 00:30:11] 
+[2026-09-19 00:31:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:31:11]     7663368      34341    7629027      35066    7629027    163      1*float*
+[2026-09-19 00:31:11] 
+[2026-09-19 00:32:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:32:11]     7663368      34346    7629022      35067    7629022    163      1*float*
+[2026-09-19 00:32:11] 
+[2026-09-19 00:33:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:33:11]     7663368      34346    7629022      35077    7629022    163      1*float*
+[2026-09-19 00:33:11] 
+[2026-09-19 00:34:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:34:11]     7663368      34345    7629023      35079    7629023    163      1*float*
+[2026-09-19 00:34:11] 
+[2026-09-19 00:35:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:35:11]     7663368      34344    7629024      35076    7629024    163      1*float*
+[2026-09-19 00:35:11] 
+[2026-09-19 00:36:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:36:11]     7663368      34342    7629026      35079    7629026    163      1*float*
+[2026-09-19 00:36:11] 
+[2026-09-19 00:37:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:37:11]     7663368      34343    7629025      35072    7629025    163      1*float*
+[2026-09-19 00:37:11] 
+[2026-09-19 00:38:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:38:11]     7663368      34346    7629022      35072    7629022    163      1*float*
+[2026-09-19 00:38:11] 
+[2026-09-19 00:39:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:39:11]     7663368      34347    7629021      35076    7629021    163      1*float*
+[2026-09-19 00:39:11] 
+[2026-09-19 00:40:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:40:11]     7663368      34347    7629021      35065    7629021    163      1*float*
+[2026-09-19 00:40:11] 
+[2026-09-19 00:41:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:41:11]     7663368      34345    7629023      35072    7629023    163      1*float*
+[2026-09-19 00:41:11] 
+[2026-09-19 00:42:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:42:11]     7663368      34345    7629023      35075    7629023    163      1*float*
+[2026-09-19 00:42:11] 
+[2026-09-19 00:43:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:43:11]     7663368      34342    7629026      35078    7629026    163      1*float*
+[2026-09-19 00:43:11] 
+[2026-09-19 00:44:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:44:11]     7663368      34341    7629027      35078    7629027    163      1*float*
+[2026-09-19 00:44:11] 
+[2026-09-19 00:45:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:45:11]     7663368      34347    7629021      35070    7629021    163      1*float*
+[2026-09-19 00:45:11] 
+[2026-09-19 00:46:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:46:11]     7663368      34342    7629026      35075    7629026    163      1*float*
+[2026-09-19 00:46:11] 
+[2026-09-19 00:47:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:47:11]     7663368      34344    7629024      35069    7629024    163      1*float*
+[2026-09-19 00:47:11] 
+[2026-09-19 00:48:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:48:11]     7663368      34343    7629025      35069    7629025    163      1*float*
+[2026-09-19 00:48:11] 
+[2026-09-19 00:49:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:49:11]     7663368      34342    7629026      35071    7629026    163      1*float*
+[2026-09-19 00:49:11] 
+[2026-09-19 00:50:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:50:11]     7663368      34343    7629025      35078    7629025    163      1*float*
+[2026-09-19 00:50:11] 
+[2026-09-19 00:51:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:51:11]     7663368      34347    7629021      35064    7629021    163      1*float*
+[2026-09-19 00:51:11] 
+[2026-09-19 00:52:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:52:11]     7663368      34342    7629026      35073    7629026    163      1*float*
+[2026-09-19 00:52:11] 
+[2026-09-19 00:53:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:53:11]     7663368      34342    7629026      35073    7629026    163      1*float*
+[2026-09-19 00:53:11] 
+[2026-09-19 00:54:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:54:11]     7663368      34344    7629024      35079    7629024    163      1*float*
+[2026-09-19 00:54:11] 
+[2026-09-19 00:55:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:55:11]     7663368      34341    7629027      35065    7629027    163      1*float*
+[2026-09-19 00:55:11] 
+[2026-09-19 00:56:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:56:11]     7663368      34342    7629026      35075    7629026    163      1*float*
+[2026-09-19 00:56:11] 
+[2026-09-19 00:57:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:57:11]     7663368      34344    7629024      35066    7629024    163      1*float*
+[2026-09-19 00:57:11] 
+[2026-09-19 00:58:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:58:11]     7663368      34341    7629027      35072    7629027    163      1*float*
+[2026-09-19 00:58:11] 
+[2026-09-19 00:59:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 00:59:11]     7663368      34347    7629021      35077    7629021    163      1*float*
+[2026-09-19 00:59:11] 
+[2026-09-19 01:00:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:00:11]     7663368      34341    7629027      35078    7629027    163      1*float*
+[2026-09-19 01:00:11] 
+[2026-09-19 01:01:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:01:11]     7663368      34341    7629027      35079    7629027    163      1*float*
+[2026-09-19 01:01:11] 
+[2026-09-19 01:02:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:02:11]     7663368      34345    7629023      35068    7629023    163      1*float*
+[2026-09-19 01:02:11] 
+[2026-09-19 01:03:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:03:11]     7663368      34342    7629026      35066    7629026    163      1*float*
+[2026-09-19 01:03:11] 
+[2026-09-19 01:04:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:04:11]     7663368      34345    7629023      35066    7629023    163      1*float*
+[2026-09-19 01:04:11] 
+[2026-09-19 01:05:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:05:11]     7663368      34344    7629024      35074    7629024    163      1*float*
+[2026-09-19 01:05:11] 
+[2026-09-19 01:06:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:06:11]     7663368      34347    7629021      35071    7629021    163      1*float*
+[2026-09-19 01:06:11] 
+[2026-09-19 01:07:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:07:11]     7663368      34345    7629023      35077    7629023    163      1*float*
+[2026-09-19 01:07:11] 
+[2026-09-19 01:08:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:08:11]     7663368      34345    7629023      35069    7629023    163      1*float*
+[2026-09-19 01:08:11] 
+[2026-09-19 01:09:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:09:11]     7663368      34346    7629022      35079    7629022    163      1*float*
+[2026-09-19 01:09:11] 
+[2026-09-19 01:10:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:10:11]     7663368      34346    7629022      35078    7629022    163      1*float*
+[2026-09-19 01:10:11] 
+[2026-09-19 01:11:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:11:11]     7663368      34346    7629022      35071    7629022    163      1*float*
+[2026-09-19 01:11:11] 
+[2026-09-19 01:12:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:12:11]     7663368      34342    7629026      35080    7629026    163      1*float*
+[2026-09-19 01:12:11] 
+[2026-09-19 01:13:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:13:11]     7663368      34346    7629022      35074    7629022    163      1*float*
+[2026-09-19 01:13:11] 
+[2026-09-19 01:14:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:14:11]     7663368      34342    7629026      35075    7629026    163      1*float*
+[2026-09-19 01:14:11] 
+[2026-09-19 01:15:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:15:11]     7663368      34344    7629024      35069    7629024    163      1*float*
+[2026-09-19 01:15:11] 
+[2026-09-19 01:16:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:16:11]     7663368      34347    7629021      35065    7629021    163      1*float*
+[2026-09-19 01:16:11] 
+[2026-09-19 01:17:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:17:11]     7663368      34344    7629024      35075    7629024    163      1*float*
+[2026-09-19 01:17:11] 
+[2026-09-19 01:18:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:18:11]     7663368      34343    7629025      35075    7629025    163      1*float*
+[2026-09-19 01:18:11] 
+[2026-09-19 01:19:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:19:11]     7663368      34342    7629026      35070    7629026    163      1*float*
+[2026-09-19 01:19:11] 
+[2026-09-19 01:20:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:20:11]     7663368      34341    7629027      35079    7629027    163      1*float*
+[2026-09-19 01:20:11] 
+[2026-09-19 01:21:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:21:11]     7663368      34341    7629027      35071    7629027    163      1*float*
+[2026-09-19 01:21:11] 
+[2026-09-19 01:22:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:22:11]     7663368      34341    7629027      35074    7629027    163      1*float*
+[2026-09-19 01:22:11] 
+[2026-09-19 01:23:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:23:11]     7663368      34345    7629023      35075    7629023    163      1*float*
+[2026-09-19 01:23:11] 
+[2026-09-19 01:24:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:24:11]     7663368      34345    7629023      35068    7629023    163      1*float*
+[2026-09-19 01:24:11] 
+[2026-09-19 01:25:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:25:11]     7663368      34346    7629022      35077    7629022    163      1*float*
+[2026-09-19 01:25:11] 
+[2026-09-19 01:26:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:26:11]     7663368      34345    7629023      35064    7629023    163      1*float*
+[2026-09-19 01:26:11] 
+[2026-09-19 01:27:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:27:11]     7663368      34341    7629027      35077    7629027    163      1*float*
+[2026-09-19 01:27:11] 
+[2026-09-19 01:28:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:28:11]     7663368      34346    7629022      35071    7629022    163      1*float*
+[2026-09-19 01:28:11] 
+[2026-09-19 01:29:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:29:11]     7663368      34346    7629022      35074    7629022    163      1*float*
+[2026-09-19 01:29:11] 
+[2026-09-19 01:30:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:30:11]     7663368      34343    7629025      35064    7629025    163      1*float*
+[2026-09-19 01:30:11] 
+[2026-09-19 01:31:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:31:11]     7663368      34346    7629022      35067    7629022    163      1*float*
+[2026-09-19 01:31:11] 
+[2026-09-19 01:32:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:32:11]     7663368      34341    7629027      35068    7629027    163      1*float*
+[2026-09-19 01:32:11] 
+[2026-09-19 01:33:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:33:11]     7663368      34345    7629023      35064    7629023    163      1*float*
+[2026-09-19 01:33:11] 
+[2026-09-19 01:34:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:34:11]     7663368      34343    7629025      35070    7629025    163      1*float*
+[2026-09-19 01:34:11] 
+[2026-09-19 01:35:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:35:11]     7663368      34347    7629021      35074    7629021    163      1*float*
+[2026-09-19 01:35:11] 
+[2026-09-19 01:36:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:36:11]     7663368      34342    7629026      35075    7629026    163      1*float*
+[2026-09-19 01:36:11] 
+[2026-09-19 01:37:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:37:11]     7663368      34346    7629022      35068    7629022    163      1*float*
+[2026-09-19 01:37:11] 
+[2026-09-19 01:38:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:38:11]     7663368      34345    7629023      35064    7629023    163      1*float*
+[2026-09-19 01:38:11] 
+[2026-09-19 01:39:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:39:11]     7663368      34342    7629026      35064    7629026    163      1*float*
+[2026-09-19 01:39:11] 
+[2026-09-19 01:40:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:40:11]     7663368      34342    7629026      35075    7629026    163      1*float*
+[2026-09-19 01:40:11] 
+[2026-09-19 01:41:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:41:11]     7663368      34346    7629022      35072    7629022    163      1*float*
+[2026-09-19 01:41:11] 
+[2026-09-19 01:42:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:42:11]     7663368      34343    7629025      35076    7629025    163      1*float*
+[2026-09-19 01:42:11] 
+[2026-09-19 01:43:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:43:11]     7663368      34341    7629027      35076    7629027    163      1*float*
+[2026-09-19 01:43:11] 
+[2026-09-19 01:44:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:44:11]     7663368      34344    7629024      35064    7629024    163      1*float*
+[2026-09-19 01:44:11] 
+[2026-09-19 01:45:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:45:11]     7663368      34347    7629021      35073    7629021    163      1*float*
+[2026-09-19 01:45:11] 
+[2026-09-19 01:46:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:46:11]     7663368      34343    7629025      35075    7629025    163      1*float*
+[2026-09-19 01:46:11] 
+[2026-09-19 01:47:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:47:11]     7663368      34346    7629022      35075    7629022    163      1*float*
+[2026-09-19 01:47:11] 
+[2026-09-19 01:48:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:48:11]     7663368      34344    7629024      35072    7629024    163      1*float*
+[2026-09-19 01:48:11] 
+[2026-09-19 01:49:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:49:11]     7663368      34346    7629022      35074    7629022    163      1*float*
+[2026-09-19 01:49:11] 
+[2026-09-19 01:50:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:50:11]     7663368      34345    7629023      35076    7629023    163      1*float*
+[2026-09-19 01:50:11] 
+[2026-09-19 01:51:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:51:11]     7663368      34345    7629023      35079    7629023    163      1*float*
+[2026-09-19 01:51:11] 
+[2026-09-19 01:52:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:52:11]     7663368      34344    7629024      35068    7629024    163      1*float*
+[2026-09-19 01:52:11] 
+[2026-09-19 01:53:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:53:11]     7663368      34344    7629024      35068    7629024    163      1*float*
+[2026-09-19 01:53:11] 
+[2026-09-19 01:54:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:54:11]     7663368      34345    7629023      35073    7629023    163      1*float*
+[2026-09-19 01:54:11] 
+[2026-09-19 01:55:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:55:11]     7663368      34344    7629024      35074    7629024    163      1*float*
+[2026-09-19 01:55:11] 
+[2026-09-19 01:56:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:56:11]     7663368      34341    7629027      35067    7629027    163      1*float*
+[2026-09-19 01:56:11] 
+[2026-09-19 01:57:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:57:11]     7663368      34342    7629026      35069    7629026    163      1*float*
+[2026-09-19 01:57:11] 
+[2026-09-19 01:58:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:58:11]     7663368      34341    7629027      35075    7629027    163      1*float*
+[2026-09-19 01:58:11] 
+[2026-09-19 01:59:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 01:59:11]     7663368      34342    7629026      35064    7629026    163      1*float*
+[2026-09-19 01:59:11] 
+[2026-09-19 02:00:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 02:00:11]     7663368      34345    7629023      35074    7629023    163      1*float*
+[2026-09-19 02:00:11] 
+[2026-09-19 02:01:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 02:01:11]     7663368      34345    7629023      35067    7629023    163      1*float*
+[2026-09-19 02:01:11] 
+[2026-09-19 02:02:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 02:02:11]     7663368      34341    7629027      35075    7629027    163      1*float*
+[2026-09-19 02:02:11] 
+[2026-09-19 02:03:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 02:03:11]     7663368      34344    7629024      35075    7629024    163      1*float*
+[2026-09-19 02:03:11] 
+[2026-09-19 02:04:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 02:04:11]     7663368      34346    7629022      35069    7629022    163      1*float*
+[2026-09-19 02:04:11] 
+[2026-09-19 02:05:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 02:05:11]     7663368      34347    7629021      35075    7629021    163      1*float*
+[2026-09-19 02:05:11] 
+[2026-09-19 02:06:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 02:06:11]     7663368      34343    7629025      35065    7629025    163      1*float*
+[2026-09-19 02:06:11] 
+[2026-09-19 02:07:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 02:07:11]     7663368      34341    7629027      35075    7629027    163      1*float*
+[2026-09-19 02:07:11] 
+[2026-09-19 02:08:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 02:08:11]     7663368      34347    7629021      35065    7629021    163      1*float*
+[2026-09-19 02:08:11] 
+[2026-09-19 02:09:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 02:09:11]     7663368      34341    7629027      35073    7629027    163      1*float*
+[2026-09-19 02:09:11] 
+[2026-09-19 02:10:11]       total       used       free    maxused    largest  nused  nfree    cpu
+[2026-09-19 02:10:11]     7663368      34344    7629024      35068    7629024    163      1*float*
+[2026-09-19 02:10:11] 
+```
+
+启用showinfo配置：
+
+在 `menuconfig` 中，进入 `System Configuration` \-\> `Resource Monitor`，选中 `SYSTEM_RESMONITOR`
 

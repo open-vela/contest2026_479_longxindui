@@ -23,27 +23,36 @@
 
 > 从零编写驱动极易犯 **DR 寄存器位宽错误（32 位 vs 8 位）**，这是最隐蔽的 bug 来源。
 
-2K300 的外设寄存器位宽因控制器而异，必须严格按 datasheet 使用匹配位宽的访问：
+2K300 的外设寄存器位宽因控制器而异，必须严格按 datasheet 使用匹配位宽的访问。
+特别注意 SPI IO 控制器的 **DR 数据寄存器是 8 位**（字节宽度 FIFO），而 CR/SR/CFG
+等控制与状态寄存器是 32 位：
 
 | 控制器 | 寄存器位宽 | 访问方式 |
 |--------|----------|---------|
-| SPI2（CR1/SR1/CFG/DR...） | 32 位 | `*(volatile uint32_t *)` |
+| SPI2 控制/状态寄存器（CR1/CR3/CR4/SR1/CFG1/CFG2/CFG3） | 32 位 | `*(volatile uint32_t *)` |
+| SPI2 数据寄存器（DR，0x40） | **8 位** | `*(volatile uint8_t *)` |
 | I2C1（CR/SR/ADDR/DATA...） | 32 位 | `*(volatile uint32_t *)` |
 | GPIO（DIR/IN/OUT） | 32 位 | `*(volatile uint32_t *)` |
 | SPI Flash（W25Q/GD25Q 数据） | 8 位 | `*(volatile uint8_t *)` |
 | UART2（16550，RBR/THR/LSR...） | 8 位 | `getreg8`/`putreg8`（内核 serial 驱动用） |
 
 ```c
-/* ✅ 正确：SPI2 数据寄存器 32 位访问 */
+/* ✅ 正确：控制/状态寄存器 32 位，DR 数据寄存器 8 位 */
 #define SPI2_BASE  (0x8000000000000000UL | 0x1610c000UL)
 #define SPI_REG32(off)  (*(volatile uint32_t *)(SPI2_BASE + (off)))
-uint32_t val = SPI_REG32(0x40);
+#define SPI_REG8(off)   (*(volatile uint8_t  *)(SPI2_BASE + (off)))
 
-/* ❌ 错误：用 uint8_t 读 32 位 SPI 寄存器会丢失高字节 */
-uint8_t bad = *(volatile uint8_t *)(SPI2_BASE + 0x40);
+SPI_REG32(0x00) = ...;              /* CR1 等控制寄存器：32 位 */
+uint8_t tx = 0xff;
+SPI_REG8(0x40) = tx;                /* DR 数据寄存器：8 位写入 */
+uint8_t rx = SPI_REG8(0x40);        /* DR 数据寄存器：8 位读取 */
+
+/* ❌ 错误：用 32 位访问 DR 会一次读/写 4 字节，破坏 FIFO 顺序 */
+uint32_t bad = SPI_REG32(0x40);
 ```
 
 > **规则**：模板中给出的寄存器访问方式（8 位 vs 32 位）均经过验证，不可随意修改。
+> DR 寄存器（偏移 0x40）必须用 8 位访问，其余 SPI 寄存器用 32 位访问。
 
 ## 非缓存地址映射
 
@@ -75,8 +84,8 @@ while ((SPI_REG32(SPI_SR1) & SPI_SR1_EOT) == 0)
     /* 超时保护可选 */
   }
 
-/* EOT 置位后才能读取数据 */
-uint32_t rx = SPI_REG32(SPI_DR);
+/* EOT 置位后才能读取数据（DR 为 8 位） */
+uint8_t rx = SPI_REG8(SPI_DR);
 ```
 
 其他必须等待的状态位：RXA（RX 可读）、TXA（TX 可写）、RXE（RX 空）。

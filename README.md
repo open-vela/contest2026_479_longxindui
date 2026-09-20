@@ -15,6 +15,8 @@
 
 各仓库的具体替换配置与改动清单见本仓 `contest2026_479_longxindui.xml`。
 
+**硬件采购**：本作品使用的开发板为**先锋派 2K0300**（LOONG-HAT），需购买 **先锋派 + 拓展版 + OLED** 组合（OLED 屏与拓展版上的传感器、Flash、EEPROM 等外设接口配套，驱动测试套件依赖这些硬件），购买链接：https://item.taobao.com/item.htm?ft=t&id=1014023893734&skuId=6186298055402&spm=a21dvs.23580594.0.0.52d9645e1Xrwc3
+
 ## 一、作品简介
 
 本作品将 **OpenVela（NuttX RTOS）** 完整移植到**龙芯 LoongArch 架构 2K0300 处理器**（LOONG-HAT 开发板 + 扩展板）上，并交付一套覆盖全部常用外设的驱动测试套件 `ls_driver_test`。
@@ -56,7 +58,7 @@ contest2026_479_longxindui/
 ├── prebuilt/
 │   └── nuttx.bin                              预编译固件（可直接烧录验证）
 ├── docs/                            技术报告、烧录方法（含截图）、原理图、引脚复用图、用户手册
-├── evidence/                        真机照片、真机视频与 openvela 通用测试结果
+├── evidence/                        真机照片与 openvela 通用测试结果
 ├── skills/loongarch-2k300-openvela-driver/    自建驱动开发 Skill（模板/引脚表/检查脚本）
 ├── logs/                            AI Coding 对话日志（组委会要求格式）
 ├── 驱动测试说明.md                   测试套件逐项说明（原理/引脚/现象）
@@ -141,7 +143,7 @@ ls_driver_test -h    # 查看帮助
 
 ### 4.6 openvela 通用测试
 
-除驱动测试外，本作品还通过了 openvela 通用系统测试（cmocka 内存管理等），指令、配置与完整串口日志见 `evidence/ls2k300 openvela通用测试结果.md`。
+除驱动测试外，本作品还通过了 openvela 通用系统测试（cmocka 内存管理等），指令、配置与完整串口日志见 `evidence/ls2k0300 openvela通用测试结果.md`。
 
 ## 五、AI Coding 使用说明
 
