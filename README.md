@@ -15,7 +15,7 @@
 
 各仓库的具体替换配置与改动清单见本仓 `contest2026_479_longxindui.xml`。
 
-**硬件采购**：本作品使用的开发板为**先锋派 2K0300**（LOONG-HAT），需购买 **先锋派 + 拓展版 + OLED** 组合（OLED 屏与拓展版上的传感器、Flash、EEPROM 等外设接口配套，驱动测试套件依赖这些硬件），购买链接：https://item.taobao.com/item.htm?ft=t&id=1014023893734&skuId=6186298055402&spm=a21dvs.23580594.0.0.52d9645e1Xrwc3
+**硬件采购**：本作品使用的开发板为**先锋派 2K0300**（LOONG-HAT），需购买 **先锋派 + 拓展版 + OLED** 组合（OLED 屏与拓展版上的传感器、Flash、EEPROM 等外设接口配套，驱动测试套件依赖这些硬件），淘宝购买链接：https://item.taobao.com/item.htm?ft=t&id=1014023893734&skuId=6186298055402&spm=a21dvs.23580594.0.0.52d9645e1Xrwc3
 
 ## 一、作品简介
 
@@ -57,12 +57,10 @@ contest2026_479_longxindui/
 ├── openvela.xml                     openvela 基础工程 manifest
 ├── prebuilt/
 │   └── nuttx.bin                              预编译固件（可直接烧录验证）
-├── docs/                            技术报告、烧录方法（含截图）、原理图、引脚复用图、用户手册
+├── docs/                            技术报告、烧录方法（含截图）、驱动测试说明、原理图、引脚复用图、用户手册
 ├── evidence/                        真机照片与 openvela 通用测试结果
 ├── skills/loongarch-2k300-openvela-driver/    自建驱动开发 Skill（模板/引脚表/检查脚本）
-├── logs/                            AI Coding 对话日志（组委会要求格式）
-├── 驱动测试说明.md                   测试套件逐项说明（原理/引脚/现象）
-└── ls2k0300编译方法.md               编译环境与步骤简明版
+└── logs/                            AI Coding 对话日志（组委会要求格式）
 ```
 
 ## 四、运行方式
@@ -81,11 +79,14 @@ repo sync -c -j8
 
 ### 4.2 部署龙芯工具链
 
-交叉编译工具链体积过大，无法随 git 仓库提交，请从龙芯官方源下载后解压（在 openvela 工作区根目录执行）：
+交叉编译工具链体积过大，无法随 git 仓库提交，请通过百度网盘获取：
+
+1. 打开网盘链接：https://pan.baidu.com/s/1FZcnFcmTGd5GcyP8ayFm5A?pwd=1234 （提取码：`1234`）
+2. 进入目录 **广东龙芯2K300先锋派&锋鸟板-v2.0/05-交叉工具链**，下载 `loongarch64-linux-gnu-gcc13.3.tar.gz`
+3. 解压到 `/opt`：
 
 ```bash
-$ wget https://gitee.com/open-loongarch/cross-toolchain/blob/master/gcc-13/loongarch64-linux-gnu-gcc13.3.tar.xz
-$ sudo tar xf loongarch64-linux-gnu-gcc13.3.tar.xz  -C /opt
+sudo tar xf loongarch64-linux-gnu-gcc13.3.tar.gz -C /opt
 ```
 
 再复制编译脚本：
@@ -153,6 +154,6 @@ ls_driver_test -h    # 查看帮助
 - **编码**：测试套件各外设驱动由 AI 按"模板 → 填引脚/寄存器 → 调试"的方式生成，配合龙芯用户手册与扩展板原理图核对寄存器地址与时序。
 - **调试**：AI 直接分析串口日志与栈回溯定位问题（如 SPI DR 寄存器位宽、EOT 等待、pinctrl 二次覆盖引脚配置等平台特有陷阱）。
 - **经验固化**：AI 将踩坑沉淀为自建 Skill `skills/loongarch-2k300-openvela-driver/`——含各外设完整驱动模板、硬件规格表、Kconfig 依赖表与自动检查脚本，后续同类驱动可直接复用。
-- **文档**：技术报告（`docs/龙芯2K0300的openvela系统移植-技术报告.pdf`）与本 README 均由 AI 依据开发记录整理生成。
+- **文档**：技术报告（`docs/基于龙芯 2K0300 的 openvela 系统移植-技术报告.pdf`）与本 README 均由 AI 依据开发记录整理生成。
 
 完整 AI 对话日志见 `logs/` 目录（按组委会要求的 `manifest.json` + `<日期>/<工具>__<会话id>.jsonl` 结构组织）。
