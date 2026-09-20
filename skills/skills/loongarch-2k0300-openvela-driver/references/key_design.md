@@ -11,8 +11,8 @@
 
 ### 2.1 引脚复用
 
-在 `nuttx/boards/loongarch/ls2k300/hummingbird-ls2k300/src/ls2k300_bringup.c` 的
-`ls2k300_hardware_init()` 中添加：
+在 `nuttx/boards/loongarch/ls2k0300/hummingbird-ls2k0300/src/ls2k0300_bringup.c` 的
+`ls2k0300_hardware_init()` 中添加：
 
 ```c
 /* GPIO KEY: GPIO86(KEY2)/GPIO87(KEY1) → GPIO */
@@ -22,11 +22,11 @@ ls_pinmux_pin_setup(87, LS_PINMUX_MODE_AS_GPIO);
 
 ### 2.2 Kconfig 使能
 
-在 `nuttx/boards/loongarch/ls2k300/hummingbird-ls2k300/configs/nsh/defconfig` 中添加：
+在 `nuttx/boards/loongarch/ls2k0300/hummingbird-ls2k0300/configs/nsh/defconfig` 中添加：
 
 ```
-CONFIG_LS2K300_GPIO=y
-CONFIG_LS2K300_PINCTRL=y
+CONFIG_LS2K0300_GPIO=y
+CONFIG_LS2K0300_PINCTRL=y
 ```
 
 ## 3. 硬件连接
@@ -138,7 +138,7 @@ int key_read_debounced(int fd)
 
 - 用万用表测量 GPIO 引脚电压，确认按下时电平变化
 - 查看 `/dev/gpioXX` 是否存在（`ls /dev/gpio*`）
-- **设备节点不存在**：检查 defconfig 中 `CONFIG_LS2K300_GPIO=y` 和 `CONFIG_LS2K300_PINCTRL=y` 是否启用
+- **设备节点不存在**：检查 defconfig 中 `CONFIG_LS2K0300_GPIO=y` 和 `CONFIG_LS2K0300_PINCTRL=y` 是否启用
 - **编译报错**：检查头文件路径、ioctl 宏名是否正确
 
 
@@ -155,9 +155,9 @@ int key_read_debounced(int fd)
 /****************************************************************************
  * gpio_key_template.c
  *
- * GPIO 按键驱动模板 - 龙芯 2K300 NuttX 平台
+ * GPIO 按键驱动模板 - 龙芯 2K0300 NuttX 平台
  *
- * Hummingbird 2K300 板按键引脚：
+ * Hummingbird 2K0300 板按键引脚：
  *   - KEY1: GPIO87（按下为低电平）
  *   - KEY2: GPIO86（按下为低电平）
  *
@@ -185,7 +185,7 @@ int key_read_debounced(int fd)
  * Pre-processor Definitions
  ****************************************************************************/
 
-/* Hummingbird 2K300 板按键定义 */
+/* Hummingbird 2K0300 板按键定义 */
 
 #define KEY1_PIN        87
 #define KEY2_PIN        86

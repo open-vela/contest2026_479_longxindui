@@ -1,9 +1,9 @@
 # 板级注册与配置（Board Registration）
 
-> [!IMPORTANT] 这是 2K300 驱动开发中最易出错、最常被遗漏的环节
+> [!IMPORTANT] 这是 2K0300 驱动开发中最易出错、最常被遗漏的环节
 >
 > 板级配置（引脚复用 + Kconfig 使能）**必须在编写驱动代码之前完成**。
-> 遗漏板级配置是 Hummingbird 2K300 平台驱动开发中最常见的错误。
+> 遗漏板级配置是 Hummingbird 2K0300 平台驱动开发中最常见的错误。
 > 本文档将原 SKILL.md 中分散的引脚复用、Kconfig 依赖、pinctrl 双层设置等内容集中于此。
 
 ## Table of Contents
@@ -24,19 +24,19 @@
 
 | 文件 | 作用 | 关键点 |
 |------|------|--------|
-| `nuttx/boards/loongarch/ls2k300/hummingbird-ls2k300/src/ls2k300_bringup.c` | 引脚复用配置（`ls2k300_hardware_init`） | 第一层 pinmux |
-| `nuttx/boards/loongarch/ls2k300/hummingbird-ls2k300/configs/nsh/defconfig` | Kconfig 使能 | ⚠️ 必须包含 `CONFIG_I2C_DRIVER=y` |
-| `nuttx/arch/loongarch/src/ls2k300/ls2k300_pwm.c` | PWM 驱动 | ⚠️ OE 位低有效 |
-| `nuttx/arch/loongarch/src/ls2k300/ls2k300_serial.c` | UART 串口驱动 | ⚠️ 注册 `/dev/ttySn` 节点 |
-| `nuttx/arch/loongarch/src/ls2k300/ls2k300_config.h` | UART 编译开关 | ⚠️ `HAVE_UART_DEVICE` 需含目标 UART |
-| `nuttx/arch/loongarch/src/ls2k300/Kconfig` | UART Kconfig 选项 | `LS2K300_UARTn` + `UARTn_BAUD/RXBUFSIZE/TXBUFSIZE` |
+| `nuttx/boards/loongarch/ls2k0300/hummingbird-ls2k0300/src/ls2k0300_bringup.c` | 引脚复用配置（`ls2k0300_hardware_init`） | 第一层 pinmux |
+| `nuttx/boards/loongarch/ls2k0300/hummingbird-ls2k0300/configs/nsh/defconfig` | Kconfig 使能 | ⚠️ 必须包含 `CONFIG_I2C_DRIVER=y` |
+| `nuttx/arch/loongarch/src/ls2k0300/ls2k0300_pwm.c` | PWM 驱动 | ⚠️ OE 位低有效 |
+| `nuttx/arch/loongarch/src/ls2k0300/ls2k0300_serial.c` | UART 串口驱动 | ⚠️ 注册 `/dev/ttySn` 节点 |
+| `nuttx/arch/loongarch/src/ls2k0300/ls2k0300_config.h` | UART 编译开关 | ⚠️ `HAVE_UART_DEVICE` 需含目标 UART |
+| `nuttx/arch/loongarch/src/ls2k0300/Kconfig` | UART Kconfig 选项 | `LS2K0300_UARTn` + `UARTn_BAUD/RXBUFSIZE/TXBUFSIZE` |
 | `apps/examples/ls_driver_test/` | 测试程序注册 | ⚠️ `Makefile` CSRCS 与 `CMakeLists.txt` SRCS 两处都要登记 |
 
 ## 引脚复用（Pinmux）双层设置原则
 
 > ⚠️ **引脚复用必须双层设置，缺一不可**
 
-1. **第一层（bringup.c）**：在 `ls2k300_hardware_init()` 中调用 `ls_pinmux_pin_setup()` 设置系统启动时的初始引脚功能。
+1. **第一层（bringup.c）**：在 `ls2k0300_hardware_init()` 中调用 `ls_pinmux_pin_setup()` 设置系统启动时的初始引脚功能。
 2. **第二层（应用层 pinctrl）**：应用层使用引脚前，必须通过 `/dev/pinctrl0` + `PINCTRLC_SETFUNCTION` 再次确认引脚功能。
 3. **原因**：系统启动过程中，其他驱动可能已覆盖引脚设置（例如 LED 测试会把 GPIO88 重置为 GPIO 模式，导致 PWM 失效）。
 
@@ -44,7 +44,7 @@
 
 ## bringup.c 引脚复用配置
 
-在 `ls2k300_bringup.c` 的 `ls2k300_hardware_init()` 中添加：
+在 `ls2k0300_bringup.c` 的 `ls2k0300_hardware_init()` 中添加：
 
 ```c
 /* I2C1: GPIO50(SDA)/GPIO51(SCL) → MAIN_FUNC */
@@ -100,29 +100,29 @@ ioctl(fd, PINCTRLC_SETFUNCTION, (unsigned long)&param);
 close(fd);
 ```
 
-> ⚠️ **易遗漏配置**：`CONFIG_LS2K300_PINCTRL=y` 是引脚控制驱动，没有它
+> ⚠️ **易遗漏配置**：`CONFIG_LS2K0300_PINCTRL=y` 是引脚控制驱动，没有它
 > `/dev/pinctrl0` 不会被创建，应用层无法设置引脚功能。
 
 ## Kconfig 依赖表
 
 板级 defconfig 路径：
-`nuttx/boards/loongarch/ls2k300/hummingbird-ls2k300/configs/nsh/defconfig`
+`nuttx/boards/loongarch/ls2k0300/hummingbird-ls2k0300/configs/nsh/defconfig`
 
 | 外设模块 | 必需的 Kconfig 选项 | 说明 |
 |---------|-------------------|------|
-| GPIO（LED/KEY/Buzzer） | `CONFIG_LS2K300_GPIO=y`, `CONFIG_LS2K300_PINCTRL=y` | GPIO 子系统 + 引脚控制 |
-| I2C1（BH1750/SSD1306/EEPROM） | `CONFIG_LS2K300_I2C=y`, `CONFIG_LS2K300_I2C1=y`, `CONFIG_I2C_DRIVER=y` | I2C 总线 + I2C1 端口 + 用户空间 I2C 设备 |
-| SPI2（MCP3204/SPI Flash） | `CONFIG_LS2K300_SPI=y`, `CONFIG_LS2K300_SPIIO2=y` | SPI 总线 + SPIIO2 端口 |
-| ADC | `CONFIG_LS2K300_ADC=y` | ADC 子系统 |
-| PWM | `CONFIG_LS2K300_PWM=y`, `CONFIG_LS2K300_PWM2=y` | PWM 子系统 + PWM2 通道 |
-| UART2（串口收发） | `CONFIG_LS2K300_UART2=y`, `CONFIG_UART2_BAUD=115200`, `CONFIG_LS2K300_GPIO=y`, `CONFIG_LS2K300_PINCTRL=y` | UART2 端口（/dev/ttyS2）+ GPIO/pinctrl（KEY2 退出用） |
+| GPIO（LED/KEY/Buzzer） | `CONFIG_LS2K0300_GPIO=y`, `CONFIG_LS2K0300_PINCTRL=y` | GPIO 子系统 + 引脚控制 |
+| I2C1（BH1750/SSD1306/EEPROM） | `CONFIG_LS2K0300_I2C=y`, `CONFIG_LS2K0300_I2C1=y`, `CONFIG_I2C_DRIVER=y` | I2C 总线 + I2C1 端口 + 用户空间 I2C 设备 |
+| SPI2（MCP3204/SPI Flash） | `CONFIG_LS2K0300_SPI=y`, `CONFIG_LS2K0300_SPIIO2=y` | SPI 总线 + SPIIO2 端口 |
+| ADC | `CONFIG_LS2K0300_ADC=y` | ADC 子系统 |
+| PWM | `CONFIG_LS2K0300_PWM=y`, `CONFIG_LS2K0300_PWM2=y` | PWM 子系统 + PWM2 通道 |
+| UART2（串口收发） | `CONFIG_LS2K0300_UART2=y`, `CONFIG_UART2_BAUD=115200`, `CONFIG_LS2K0300_GPIO=y`, `CONFIG_LS2K0300_PINCTRL=y` | UART2 端口（/dev/ttyS2）+ GPIO/pinctrl（KEY2 退出用） |
 | 测试应用 | `CONFIG_EXAMPLES_LS_DRIVER_TEST=y` | 驱动测试程序 |
 
 > ⚠️ **`CONFIG_I2C_DRIVER=y` 是用户空间 I2C 设备的必要配置**，defconfig 中可能未包含，必须手动添加。
 >
 > ⚠️ **UART 的 `/dev/ttySn` 节点由内核 serial 驱动注册**，仅开 defconfig 不够——
-> 还需 `ls2k300_serial.c` 加 `g_uartNport` 实例、`ls2k300_config.h` 的 `HAVE_UART_DEVICE`
-> 含目标 UART、`Kconfig` 定义 `LS2K300_UARTn`。详见 `uart_design.md` 2.3。
+> 还需 `ls2k0300_serial.c` 加 `g_uartNport` 实例、`ls2k0300_config.h` 的 `HAVE_UART_DEVICE`
+> 含目标 UART、`Kconfig` 定义 `LS2K0300_UARTn`。详见 `uart_design.md` 2.3。
 
 ## 引脚冲突检查
 
@@ -141,8 +141,8 @@ close(fd);
 2. 按上方 Kconfig 依赖表补齐缺失项。
 3. 重点检查：
    - `CONFIG_I2C_DRIVER=y` 是否存在（I2C 外设必备）
-   - `CONFIG_LS2K300_PINCTRL=y` 是否存在（pinctrl 设备节点必备）
-   - 所用外设的通道/端口 CONFIG 是否启用（如 `CONFIG_LS2K300_PWM2=y`、`CONFIG_LS2K300_UART2=y`）
+   - `CONFIG_LS2K0300_PINCTRL=y` 是否存在（pinctrl 设备节点必备）
+   - 所用外设的通道/端口 CONFIG 是否启用（如 `CONFIG_LS2K0300_PWM2=y`、`CONFIG_LS2K0300_UART2=y`）
 4. UART 额外确认内核 serial 驱动是否已注册目标通道实例（见 `uart_design.md` 2.3）。
 
 运行 `scripts/validate-boardconfig.sh` 可自动检查 defconfig 中的必需 CONFIG 项。

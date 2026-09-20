@@ -1,19 +1,19 @@
 ---
-name: loongarch-2k300-openvela-driver
+name: loongarch-2k0300-openvela-driver
 description: >
-  龙芯 LoongArch 2K300 板卡驱动开发 Skill，适用于 OpenVela / NuttX RTOS 平台。
+  龙芯 LoongArch 2K0300 板卡驱动开发 Skill，适用于 OpenVela / NuttX RTOS 平台。
   覆盖 GPIO（按键/LED/蜂鸣器）、硬件 PWM（呼吸灯）、硬件 UART（串口收发）、硬件 SPI（ADC 读取、SPI Flash 存储）、
   I2C 传感器（如 BH1750 光照）、I2C OLED 显示屏、I2C EEPROM 存储等外设驱动
   的编写、调试与验证。
-  触发关键词：龙芯、LoongArch、openvela、2K300 驱动、I2C 传感器、OLED 显示、
+  触发关键词：龙芯、LoongArch、openvela、2K0300 驱动、I2C 传感器、OLED 显示、
   SPI ADC、SPI Flash、W25Q、GD25Q、spiflash、flash 存储、GPIO 按键、GPIO LED、
   蜂鸣器、buzzer、EEPROM、AT24C、PWM、呼吸灯、硬件 PWM、pwm、UART、串口、
   ttyS、串口收发、NuttX 驱动开发。
 version: "2.0"
-tags: [loongarch, nuttx, openvela, driver, spi, i2c, gpio, pwm, uart, 2k300, eeprom, buzzer, spiflash]
+tags: [loongarch, nuttx, openvela, driver, spi, i2c, gpio, pwm, uart, 2k0300, eeprom, buzzer, spiflash]
 ---
 
-# LoongArch 2K300 驱动开发 Skill（OpenVela / NuttX）
+# LoongArch 2K0300 驱动开发 Skill（OpenVela / NuttX）
 
 参考 `nuttx-driver-development` 的结构组织：按 Preparation → Implementation → Review
 全生命周期推进，保持每次改动小而可测。所有外设的**完整驱动模板源码已内联在对应
@@ -55,7 +55,7 @@ reference 文档中**（原 `assets/` 已删除），编写驱动时直接从 re
 
 ### 3) 确定驱动模式（外设调度表）
 
-2K300 平台外设均通过 NuttX **POSIX VFS 驱动模型**访问（设备以文件形式出现在 `/dev/`）。
+2K0300 平台外设均通过 NuttX **POSIX VFS 驱动模型**访问（设备以文件形式出现在 `/dev/`）。
 按用户需求加载对应 reference 文档：
 
 | 外设 | 触发关键词 | Reference 文档 | 模板源码章节 |
@@ -85,7 +85,7 @@ reference 文档中**（原 `assets/` 已删除），编写驱动时直接从 re
 > 可用 `scripts/validate-boardconfig.sh` 与 `scripts/validate-pinmux.sh` 自动检查。
 
 1. **引脚复用（双层设置，缺一不可）**：
-   - 第一层：`ls2k300_bringup.c` 中 `ls2k300_hardware_init()` 调用 `ls_pinmux_pin_setup()`。
+   - 第一层：`ls2k0300_bringup.c` 中 `ls2k0300_hardware_init()` 调用 `ls_pinmux_pin_setup()`。
    - 第二层：应用层通过 `/dev/pinctrl0` + `PINCTRLC_SETFUNCTION` 再次确认（系统启动后其他驱动可能覆盖引脚设置）。
 2. **引脚冲突检查**：GPIO88 同时是蓝色 LED 和 PWM2，不能同时作 GPIO LED 和 PWM。
 3. **Kconfig 使能**：在板级 defconfig 中添加所需配置项（见下方 Kconfig 依赖表）。
@@ -94,17 +94,17 @@ reference 文档中**（原 `assets/` 已删除），编写驱动时直接从 re
 
 | 外设模块 | 必需的 Kconfig 选项 |
 |---------|-------------------|
-| GPIO（LED/KEY/Buzzer） | `CONFIG_LS2K300_GPIO=y`, `CONFIG_LS2K300_PINCTRL=y` |
-| I2C1（BH1750/SSD1306/EEPROM） | `CONFIG_LS2K300_I2C=y`, `CONFIG_LS2K300_I2C1=y`, `CONFIG_I2C_DRIVER=y` |
-| SPI2（MCP3204/SPI Flash） | `CONFIG_LS2K300_SPI=y`, `CONFIG_LS2K300_SPIIO2=y` |
-| ADC | `CONFIG_LS2K300_ADC=y` |
-| PWM | `CONFIG_LS2K300_PWM=y`, `CONFIG_LS2K300_PWM2=y` |
-| UART2（串口收发） | `CONFIG_LS2K300_UART2=y`, `CONFIG_UART2_BAUD=115200`, `CONFIG_LS2K300_GPIO=y`, `CONFIG_LS2K300_PINCTRL=y` |
+| GPIO（LED/KEY/Buzzer） | `CONFIG_LS2K0300_GPIO=y`, `CONFIG_LS2K0300_PINCTRL=y` |
+| I2C1（BH1750/SSD1306/EEPROM） | `CONFIG_LS2K0300_I2C=y`, `CONFIG_LS2K0300_I2C1=y`, `CONFIG_I2C_DRIVER=y` |
+| SPI2（MCP3204/SPI Flash） | `CONFIG_LS2K0300_SPI=y`, `CONFIG_LS2K0300_SPIIO2=y` |
+| ADC | `CONFIG_LS2K0300_ADC=y` |
+| PWM | `CONFIG_LS2K0300_PWM=y`, `CONFIG_LS2K0300_PWM2=y` |
+| UART2（串口收发） | `CONFIG_LS2K0300_UART2=y`, `CONFIG_UART2_BAUD=115200`, `CONFIG_LS2K0300_GPIO=y`, `CONFIG_LS2K0300_PINCTRL=y` |
 
 > ⚠️ **易遗漏配置**：
-> - `CONFIG_LS2K300_PINCTRL=y` 缺失则 `/dev/pinctrl0` 不被创建。
+> - `CONFIG_LS2K0300_PINCTRL=y` 缺失则 `/dev/pinctrl0` 不被创建。
 > - `CONFIG_I2C_DRIVER=y` 是用户空间 I2C 设备的必要配置，defconfig 中常缺失，必须手动添加。
-> - UART 的 `/dev/ttySn` 节点由内核 serial 驱动注册，仅开 defconfig 不够还需 `ls2k300_serial.c`/`ls2k300_config.h`/`Kconfig` 三处补实例（见 `uart_design.md` 2.3）。
+> - UART 的 `/dev/ttySn` 节点由内核 serial 驱动注册，仅开 defconfig 不够还需 `ls2k0300_serial.c`/`ls2k0300_config.h`/`Kconfig` 三处补实例（见 `uart_design.md` 2.3）。
 
 #### 引脚复用配置示例（bringup.c）
 
@@ -172,7 +172,7 @@ ls_pinmux_pin_setup(88, LS_PINMUX_MODE_AS_SECOND_FUNC);
 
 ## 平台编码与内核 API 规则
 
-编写或审查任何 2K300 驱动代码时，加载 `references/coding_rules.md`，覆盖龙芯平台特有陷阱：
+编写或审查任何 2K0300 驱动代码时，加载 `references/coding_rules.md`，覆盖龙芯平台特有陷阱：
 寄存器位宽、非缓存地址、SPI EOT 等待、CS 管理、PWM OE 低有效、无 FPU 整数运算、
 格式说明符匹配、中断与临界区、错误清理模式。
 
@@ -261,7 +261,7 @@ scripts/workflow-state.sh init
 ## 目录结构说明
 
 ```
-loongarch-2k300-openvela-driver/
+loongarch-2k0300-openvela-driver/
 ├── SKILL.md                              # 本文件 - 核心指令
 ├── references/                           # 技术参考手册（含完整模板源码）
 │   ├── hardware_spec.md                  # 硬件规格（引脚、寄存器、时钟、Kconfig 依赖表）
@@ -286,10 +286,10 @@ loongarch-2k300-openvela-driver/
     └── workflow-state.sh                 # 5 步工作流状态管理
 
 需要配合修改的板级文件（不在 Skill 目录内）：
-├── nuttx/boards/.../src/ls2k300_bringup.c   # 引脚复用配置（ls2k300_hardware_init）
+├── nuttx/boards/.../src/ls2k0300_bringup.c   # 引脚复用配置（ls2k0300_hardware_init）
 ├── nuttx/boards/.../configs/nsh/defconfig    # Kconfig 使能（⚠️ 必须包含 CONFIG_I2C_DRIVER=y）
-├── nuttx/arch/.../ls2k300_pwm.c             # PWM 驱动（⚠️ OE 位低有效）
-├── nuttx/arch/.../ls2k300_serial.c          # UART 串口驱动（⚠️ 注册 /dev/ttySn 节点）
-├── nuttx/arch/.../ls2k300_config.h          # UART 的 HAVE_UART_DEVICE 条件
+├── nuttx/arch/.../ls2k0300_pwm.c             # PWM 驱动（⚠️ OE 位低有效）
+├── nuttx/arch/.../ls2k0300_serial.c          # UART 串口驱动（⚠️ 注册 /dev/ttySn 节点）
+├── nuttx/arch/.../ls2k0300_config.h          # UART 的 HAVE_UART_DEVICE 条件
 └── apps/examples/ls_driver_test/             # 测试程序注册（⚠️ Makefile 与 CMakeLists 两处）
 ```

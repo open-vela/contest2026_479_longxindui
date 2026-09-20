@@ -11,8 +11,8 @@
 
 ### 2.1 引脚复用
 
-在 `nuttx/boards/loongarch/ls2k300/hummingbird-ls2k300/src/ls2k300_bringup.c` 的
-`ls2k300_hardware_init()` 中添加：
+在 `nuttx/boards/loongarch/ls2k0300/hummingbird-ls2k0300/src/ls2k0300_bringup.c` 的
+`ls2k0300_hardware_init()` 中添加：
 
 ```c
 /* GPIO LED: GPIO72(红)/GPIO73(绿) → GPIO */
@@ -25,11 +25,11 @@ ls_pinmux_pin_setup(73, LS_PINMUX_MODE_AS_GPIO);
 
 ### 2.2 Kconfig 使能
 
-在 `nuttx/boards/loongarch/ls2k300/hummingbird-ls2k300/configs/nsh/defconfig` 中添加：
+在 `nuttx/boards/loongarch/ls2k0300/hummingbird-ls2k0300/configs/nsh/defconfig` 中添加：
 
 ```
-CONFIG_LS2K300_GPIO=y
-CONFIG_LS2K300_PINCTRL=y
+CONFIG_LS2K0300_GPIO=y
+CONFIG_LS2K0300_PINCTRL=y
 ```
 
 ## 3. 硬件连接
@@ -125,7 +125,7 @@ void led_heartbeat(uint32_t interval_ms)
 - 用万用表测量 GPIO 引脚电压，确认电平是否正确切换
 - 如果 GPIO 不响应，检查 `pinctrl_set_gpio_function()` 返回值
 - 查看 `/dev/gpioXX` 是否存在（`ls /dev/gpio*`）
-- **设备节点不存在**：检查 defconfig 中 `CONFIG_LS2K300_GPIO=y` 和 `CONFIG_LS2K300_PINCTRL=y` 是否启用
+- **设备节点不存在**：检查 defconfig 中 `CONFIG_LS2K0300_GPIO=y` 和 `CONFIG_LS2K0300_PINCTRL=y` 是否启用
 - **编译报错**：检查头文件路径、ioctl 宏名是否正确
 
 
@@ -142,9 +142,9 @@ void led_heartbeat(uint32_t interval_ms)
 /****************************************************************************
  * gpio_led_template.c
  *
- * GPIO LED 驱动模板 - 龙芯 2K300 NuttX 平台
+ * GPIO LED 驱动模板 - 龙芯 2K0300 NuttX 平台
  *
- * Hummingbird 2K300 板 LED 引脚：
+ * Hummingbird 2K0300 板 LED 引脚：
  *   - 红色 LED: GPIO72
  *   - 绿色 LED: GPIO73
  *   - 蓝色 LED: GPIO88（已分配给硬件 PWM2，不作 GPIO 使用）
@@ -173,7 +173,7 @@ void led_heartbeat(uint32_t interval_ms)
  * Pre-processor Definitions
  ****************************************************************************/
 
-/* Hummingbird 2K300 板 LED 定义
+/* Hummingbird 2K0300 板 LED 定义
  * 注意: GPIO88(蓝灯) 已分配给硬件 PWM2，不作 GPIO LED 使用
  */
 
@@ -186,7 +186,7 @@ void led_heartbeat(uint32_t interval_ms)
 #define LED_BLINK_MS    500
 #define LED_ACTIVE_HIGH 1                  /* 高电平点亮 */
 
-/* pinctrl 设置函数（在板级代码 ls2k300_bringup.c 中实现） */
+/* pinctrl 设置函数（在板级代码 ls2k0300_bringup.c 中实现） */
 
 extern int pinctrl_set_gpio_function(int pin);
 

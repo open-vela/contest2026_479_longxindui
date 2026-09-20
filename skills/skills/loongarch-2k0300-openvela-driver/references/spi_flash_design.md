@@ -2,7 +2,7 @@
 
 ## 1. 功能概述
 
-通过 LS2K300 硬件 SPI2 控制器读写 SPI Flash（如 W25Qxx、GD25Qxx 系列）。
+通过 LS2K0300 硬件 SPI2 控制器读写 SPI Flash（如 W25Qxx、GD25Qxx 系列）。
 支持 JEDEC ID 读取、扇区擦除、页编程、数据读取等标准操作。
 
 ### 典型 SPI Flash 特性
@@ -16,8 +16,8 @@
 
 ### 2.1 引脚复用
 
-在 `nuttx/boards/loongarch/ls2k300/hummingbird-ls2k300/src/ls2k300_bringup.c` 的
-`ls2k300_hardware_init()` 中添加：
+在 `nuttx/boards/loongarch/ls2k0300/hummingbird-ls2k0300/src/ls2k0300_bringup.c` 的
+`ls2k0300_hardware_init()` 中添加：
 
 ```c
 /* SPI2: GPIO64/65/66 → MAIN_FUNC, GPIO85 → GPIO(Flash 软件CS) */
@@ -31,20 +31,20 @@ ls_pinmux_pin_setup(85, LS_PINMUX_MODE_AS_GPIO);
 
 ### 2.2 Kconfig 使能
 
-在 `nuttx/boards/loongarch/ls2k300/hummingbird-ls2k300/configs/nsh/defconfig` 中添加：
+在 `nuttx/boards/loongarch/ls2k0300/hummingbird-ls2k0300/configs/nsh/defconfig` 中添加：
 
 ```
-CONFIG_LS2K300_SPI=y
-CONFIG_LS2K300_SPIIO2=y
-CONFIG_LS2K300_GPIO=y
-CONFIG_LS2K300_PINCTRL=y
+CONFIG_LS2K0300_SPI=y
+CONFIG_LS2K0300_SPIIO2=y
+CONFIG_LS2K0300_GPIO=y
+CONFIG_LS2K0300_PINCTRL=y
 ```
 
 ## 3. SPI 寄存器访问规范（⚠️ 关键）
 
 ### 3.1 DR 寄存器必须用 8 位访问
 
-LS2K300 的 SPI IO 控制器 DR 寄存器是 **字节宽度** 的。必须使用 8 位访问：
+LS2K0300 的 SPI IO 控制器 DR 寄存器是 **字节宽度** 的。必须使用 8 位访问：
 
 ```c
 /* ✅ 正确：8 位访问 */
@@ -58,7 +58,7 @@ SPI_REG32(LS_SPI_IO_DR) = tx;       /* 写入4字节到FIFO！ */
 rx = SPI_REG32(LS_SPI_IO_DR);       /* 读取4字节！ */
 ```
 
-**验证方法**：查看 `nuttx/arch/loongarch/src/ls2k300/ls2k300_spiio.c` 中的
+**验证方法**：查看 `nuttx/arch/loongarch/src/ls2k0300/ls2k0300_spiio.c` 中的
 `spiio_write_reg_byte` 和 `spiio_read_reg_byte` 函数，它们使用 `putreg8`/`getreg8`。
 
 ### 3.2 必须等待 EOT 标志
@@ -338,8 +338,8 @@ JEDEC ID 正确，但 verify 失败
 
 ### 8.4 通用问题
 
-- **编译报错 undefined reference**：检查 defconfig 中 `CONFIG_LS2K300_SPI=y` 和 `CONFIG_LS2K300_SPIIO2=y` 是否启用
-- **设备节点不存在**：检查 bringup.c 中是否调用了 `ls2k300_spiio_initialize(0)`
+- **编译报错 undefined reference**：检查 defconfig 中 `CONFIG_LS2K0300_SPI=y` 和 `CONFIG_LS2K0300_SPIIO2=y` 是否启用
+- **设备节点不存在**：检查 bringup.c 中是否调用了 `ls2k0300_spiio_initialize(0)`
 - **引脚冲突**：GPIO67 是 ADC CS，GPIO85 是 Flash CS，不要混淆
 
 ## 9. 完整初始化流程
@@ -394,9 +394,9 @@ cleanup:
 /****************************************************************************
  * spi_flash_template.c (已内联于本文档"完整模板代码"章节)
  *
- * SPI Flash 驱动模板 - 基于 LS2K300 硬件 SPI2 控制器
+ * SPI Flash 驱动模板 - 基于 LS2K0300 硬件 SPI2 控制器
  *
- * Hummingbird 2K300 板 SPI Flash 接线（LOONG-HAT 40PIN）：
+ * Hummingbird 2K0300 板 SPI Flash 接线（LOONG-HAT 40PIN）：
  *   - SPI2_CLK:  GPIO64 (MAIN_FUNC) - J12 Pin23
  *   - SPI2_MISO: GPIO65 (MAIN_FUNC) - J12 Pin21
  *   - SPI2_MOSI: GPIO66 (MAIN_FUNC) - J12 Pin19
@@ -436,7 +436,7 @@ cleanup:
 
 #define LS_GENERAL_CFG5_ADDR    (0x8000000000000000UL | 0x16000114UL)
 
-/* SPI IO 寄存器偏移（LS2K300 手册 ch.10） */
+/* SPI IO 寄存器偏移（LS2K0300 手册 ch.10） */
 
 #define LS_SPI_IO_CR1           0x00
 #define LS_SPI_IO_CR3           0x08

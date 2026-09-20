@@ -14,8 +14,8 @@
 
 ### 2.1 引脚复用
 
-在 `nuttx/boards/loongarch/ls2k300/hummingbird-ls2k300/src/ls2k300_bringup.c` 的
-`ls2k300_hardware_init()` 中添加：
+在 `nuttx/boards/loongarch/ls2k0300/hummingbird-ls2k0300/src/ls2k0300_bringup.c` 的
+`ls2k0300_hardware_init()` 中添加：
 
 ```c
 /* SPI2: GPIO64/65/66 → MAIN_FUNC, GPIO67 → GPIO(软件CS) */
@@ -27,11 +27,11 @@ ls_pinmux_pin_setup(67, LS_PINMUX_MODE_AS_GPIO);
 
 ### 2.2 Kconfig 使能
 
-在 `nuttx/boards/loongarch/ls2k300/hummingbird-ls2k300/configs/nsh/defconfig` 中添加：
+在 `nuttx/boards/loongarch/ls2k0300/hummingbird-ls2k0300/configs/nsh/defconfig` 中添加：
 
 ```
-CONFIG_LS2K300_SPI=y
-CONFIG_LS2K300_SPIIO2=y
+CONFIG_LS2K0300_SPI=y
+CONFIG_LS2K0300_SPIIO2=y
 ```
 
 ## 3. SPI 时序要求
@@ -329,7 +329,7 @@ int mcp3204_read_average(uint8_t channel, uint16_t *raw, int samples)
  *
  * 硬件 SPI 驱动模板 - SPI 读写接口封装
  *
- * Hummingbird 2K300 板 SPI2 引脚：
+ * Hummingbird 2K0300 板 SPI2 引脚：
  *   - SPI2_CLK:  GPIO64 (MAIN_FUNC)
  *   - SPI2_MISO: GPIO65 (MAIN_FUNC)
  *   - SPI2_MOSI: GPIO66 (MAIN_FUNC)
@@ -338,7 +338,7 @@ int mcp3204_read_average(uint8_t channel, uint16_t *raw, int samples)
  *   - APB 时钟: 200MHz
  *
  * 使用说明：
- *   1. 引脚复用在 ls2k300_bringup.c 中已配置
+ *   1. 引脚复用在 ls2k0300_bringup.c 中已配置
  *   2. CS_PIN 已设为 GPIO67
  *   3. 根据从设备要求调整 SPI 模式（CPOL/CPHA）
  ****************************************************************************/
@@ -353,7 +353,7 @@ int mcp3204_read_average(uint8_t channel, uint16_t *raw, int samples)
 #include <nuttx/arch.h>
 #include <nuttx/ioexpander/gpio.h>
 
-/* Hummingbird 2K300 板 SPI2 配置 */
+/* Hummingbird 2K0300 板 SPI2 配置 */
 
 #define SPI_BASE_PHYS       0x1610c000UL
 #define SPI_BASE            (0x8000000000000000UL | SPI_BASE_PHYS)
@@ -366,7 +366,7 @@ int mcp3204_read_average(uint8_t channel, uint16_t *raw, int samples)
 #define CFG5_REG            (*(volatile uint32_t *)GENERAL_CFG5_ADDR)
 #define SPI_WAIT_TIMEOUT_US 10000U
 
-/* SPI2 寄存器偏移（LS2K300 通用） */
+/* SPI2 寄存器偏移（LS2K0300 通用） */
 
 #define SPI_IO_CR1          0x00
 #define SPI_IO_CR3          0x08

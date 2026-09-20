@@ -1,5 +1,5 @@
 #!/bin/bash
-# workflow-state.sh — loongarch-2k300 驱动开发 5 步工作流状态管理
+# workflow-state.sh — loongarch-2k0300 驱动开发 5 步工作流状态管理
 # 契约：成功 exit 0，失败 exit 2 + stderr
 #
 # 用法：
@@ -27,7 +27,7 @@ init_state() {
   mkdir -p "$STATE_DIR"
   cat > "$STATE_FILE" << 'INIT'
 {
-  "workflow": "loongarch-2k300-openvela-driver",
+  "workflow": "loongarch-2k0300-openvela-driver",
   "started": "",
   "steps": {
     "1": {"name": "需求分析",     "status": "pending", "validated": false},

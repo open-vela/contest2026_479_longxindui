@@ -5,7 +5,7 @@
 #   外设模块取值：i2c1 | spi2 | led | key | buzzer | pwm | uart2 | all
 #
 # 示例：
-#   validate-pinmux.sh nuttx/boards/.../src/ls2k300_bringup.c all
+#   validate-pinmux.sh nuttx/boards/.../src/ls2k0300_bringup.c all
 
 BRINGUP="${1:-}"
 MODULE="${2:-all}"

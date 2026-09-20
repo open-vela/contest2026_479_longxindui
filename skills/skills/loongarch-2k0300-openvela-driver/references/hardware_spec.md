@@ -1,4 +1,4 @@
-# 龙芯 2K300 硬件规格参考（Hummingbird 板）
+# 龙芯 2K0300 硬件规格参考（Hummingbird 板）
 
 ## 1. 引脚分配表
 
@@ -31,7 +31,7 @@
 | UART2_TX | GPIO44 | MAIN_FUNC (0x3) | UART2 发送 |
 | UART2_RX | GPIO45 | MAIN_FUNC (0x3) | UART2 接收 |
 
-- UART2 设备路径：`/dev/ttyS2`（由内核 `ls2k300_serial.c` 注册）
+- UART2 设备路径：`/dev/ttyS2`（由内核 `ls2k0300_serial.c` 注册）
 - UART2 基地址：`0x16100800`（非缓存 `0x8000000016100800`）
 - UART0 基地址：`0x16100000`（控制台，已固定）
 - 波特率分频基准：APB 200MHz，`div_val = (200MHz + baud*8)/(baud*16)`
@@ -136,8 +136,8 @@
 ## 4. 引脚复用配置函数
 
 ```c
-/* 板级引脚复用设置（在 ls2k300_bringup.c 中调用） */
-void ls2k300_hardware_init(void)
+/* 板级引脚复用设置（在 ls2k0300_bringup.c 中调用） */
+void ls2k0300_hardware_init(void)
 {
   /* I2C1: GPIO50(SDA)/GPIO51(SCL) → MAIN_FUNC */
   ls_pinmux_pin_setup(50, LS_PINMUX_MODE_AS_MAIN_FUNC);
@@ -169,16 +169,16 @@ void ls2k300_hardware_init(void)
 
 ## 5. Kconfig 依赖表
 
-板级 defconfig 位于：`nuttx/boards/loongarch/ls2k300/hummingbird-ls2k300/configs/nsh/defconfig`
+板级 defconfig 位于：`nuttx/boards/loongarch/ls2k0300/hummingbird-ls2k0300/configs/nsh/defconfig`
 
 | 外设模块 | 必需的 Kconfig 选项 | 说明 |
 |---------|-------------------|------|
-| GPIO（LED/KEY） | `CONFIG_LS2K300_GPIO=y`, `CONFIG_LS2K300_PINCTRL=y` | GPIO 子系统 + 引脚控制 |
-| I2C1（BH1750/SSD1306） | `CONFIG_LS2K300_I2C=y`, `CONFIG_LS2K300_I2C1=y` | I2C 总线驱动 + I2C1 端口 |
-| SPI2（MCP3204） | `CONFIG_LS2K300_SPI=y`, `CONFIG_LS2K300_SPIIO2=y` | SPI 总线驱动 + SPIIO2 端口 |
-| ADC | `CONFIG_LS2K300_ADC=y` | ADC 子系统 |
-| PWM | `CONFIG_LS2K300_PWM=y`, `CONFIG_LS2K300_PWM2=y` | PWM 子系统 + PWM2 通道 |
-| UART2 | `CONFIG_LS2K300_UART2=y`, `CONFIG_UART2_BAUD=115200` | UART2 端口（/dev/ttyS2） |
+| GPIO（LED/KEY） | `CONFIG_LS2K0300_GPIO=y`, `CONFIG_LS2K0300_PINCTRL=y` | GPIO 子系统 + 引脚控制 |
+| I2C1（BH1750/SSD1306） | `CONFIG_LS2K0300_I2C=y`, `CONFIG_LS2K0300_I2C1=y` | I2C 总线驱动 + I2C1 端口 |
+| SPI2（MCP3204） | `CONFIG_LS2K0300_SPI=y`, `CONFIG_LS2K0300_SPIIO2=y` | SPI 总线驱动 + SPIIO2 端口 |
+| ADC | `CONFIG_LS2K0300_ADC=y` | ADC 子系统 |
+| PWM | `CONFIG_LS2K0300_PWM=y`, `CONFIG_LS2K0300_PWM2=y` | PWM 子系统 + PWM2 通道 |
+| UART2 | `CONFIG_LS2K0300_UART2=y`, `CONFIG_UART2_BAUD=115200` | UART2 端口（/dev/ttyS2） |
 | 测试应用 | `CONFIG_EXAMPLES_LS_DRIVER_TEST=y` | 驱动测试程序 |
 
 ## 6. 通用数据结构定义

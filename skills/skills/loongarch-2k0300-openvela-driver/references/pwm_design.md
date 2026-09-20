@@ -2,7 +2,7 @@
 
 ## 1. 功能概述
 
-LS2K300 集成 4 路 PWM 控制器（PWM0-PWM3），用于产生脉冲宽度调制信号。
+LS2K0300 集成 4 路 PWM 控制器（PWM0-PWM3），用于产生脉冲宽度调制信号。
 每路 PWM 有独立的计数器、周期/占空比缓冲寄存器和控制寄存器。
 该板仅引出了 PWM2（GPIO88）。
 
@@ -21,8 +21,8 @@ LS2K300 集成 4 路 PWM 控制器（PWM0-PWM3），用于产生脉冲宽度调�
 
 **第一步：bringup.c 中设置**
 
-在 `nuttx/boards/loongarch/ls2k300/hummingbird-ls2k300/src/ls2k300_bringup.c`
-的 `ls2k300_hardware_init()` 中添加：
+在 `nuttx/boards/loongarch/ls2k0300/hummingbird-ls2k0300/src/ls2k0300_bringup.c`
+的 `ls2k0300_hardware_init()` 中添加：
 
 ```c
 /* PWM2: GPIO88 → SECOND_FUNC */
@@ -50,8 +50,8 @@ close(fd);
 在 defconfig 中添加：
 
 ```
-CONFIG_LS2K300_PWM=y
-CONFIG_LS2K300_PWM2=y
+CONFIG_LS2K0300_PWM=y
+CONFIG_LS2K0300_PWM2=y
 ```
 
 ## 3. 硬件原理
@@ -137,15 +137,15 @@ close(fd);
 
 ## 6. 注意事项
 
-1. **OE 位低有效**：这是最常见的坑。驱动中 `ls2k300_pwm_start()` 必须清除 OE 位（OE=0）才能使能输出。
+1. **OE 位低有效**：这是最常见的坑。驱动中 `ls2k0300_pwm_start()` 必须清除 OE 位（OE=0）才能使能输出。
 
 2. **引脚复用双层设置**：bringup.c 中的 `ls_pinmux_pin_setup()` 设置初始引脚功能，但应用层可能被其他驱动覆盖，必须在使用前通过 `PINCTRLC_SETFUNCTION` 重新设置。
 
 3. **GPIO88 冲突**：GPIO88 同时是蓝色 LED 和 PWM2 输出。使用硬件 PWM 时，必须从 test_led.c 和 test_key.c 中移除 GPIO88 的 LED 逻辑。
 
-4. **PWMIOC_START 流程**：LS2K300 的 `ls2k300_pwm_ioctl()` 在处理 PWMIOC_START 时会先调用 `ls2k300_pwm_setup()`（禁用 EN，复位计数器），再调用 `ls2k300_pwm_start()`（设置缓冲值，使能 EN）。
+4. **PWMIOC_START 流程**：LS2K0300 的 `ls2k0300_pwm_ioctl()` 在处理 PWMIOC_START 时会先调用 `ls2k0300_pwm_setup()`（禁用 EN，复位计数器），再调用 `ls2k0300_pwm_start()`（设置缓冲值，使能 EN）。
 
-5. **时钟频率**：LS2K300 PWM 时钟为 200MHz。对于 1kHz PWM，full_buffer = 200000。
+5. **时钟频率**：LS2K0300 PWM 时钟为 200MHz。对于 1kHz PWM，full_buffer = 200000。
 
 6. **呼吸灯平滑度**：占空比步进越小、每步延时越长，呼吸效果越平滑。典型配置：100步 × 30ms/步 = 3秒一个完整呼吸周期。
 
@@ -155,7 +155,7 @@ close(fd);
    - 检查 OE 位是否为 0（OE 是低有效，OE=1 会屏蔽输出）
    - 检查引脚复用是否正确（GPIO88 → SECOND_FUNC）
    - 检查应用层是否通过 pinctrl 设置了引脚功能
-   - 检查 defconfig 中 `CONFIG_LS2K300_PWM=y` 和 `CONFIG_LS2K300_PWM2=y` 是否启用
+   - 检查 defconfig 中 `CONFIG_LS2K0300_PWM=y` 和 `CONFIG_LS2K0300_PWM2=y` 是否启用
    - 用示波器测量 PWM 输出引脚
 
 2. **占空比不正确**：
@@ -167,8 +167,8 @@ close(fd);
    - 如果需要反转极性，使用 ioctl 0x2001 设置 INVERT 位
 
 4. **设备节点不存在**：
-   - 检查 defconfig 中 `CONFIG_LS2K300_PWM=y` 和对应通道的 CONFIG
-   - 检查 bringup.c 中是否调用了 `ls2k300_pwm_initialize(port)`
+   - 检查 defconfig 中 `CONFIG_LS2K0300_PWM=y` 和对应通道的 CONFIG
+   - 检查 bringup.c 中是否调用了 `ls2k0300_pwm_initialize(port)`
 
 5. **PWM 与 LED 冲突**：
    - GPIO88 同时是蓝灯和 PWM2，不能同时作为 GPIO LED 和 PWM 使用
@@ -188,9 +188,9 @@ close(fd);
 /****************************************************************************
  * pwm_template.c
  *
- * Hardware PWM 呼吸灯驱动模板 - 龙芯 2K300 NuttX 平台
+ * Hardware PWM 呼吸灯驱动模板 - 龙芯 2K0300 NuttX 平台
  *
- * Hummingbird 2K300 板 PWM 引脚（仅引出 PWM2）：
+ * Hummingbird 2K0300 板 PWM 引脚（仅引出 PWM2）：
  *   PWM2 → GPIO88 (SECOND_FUNC)
  *
  * 注意：GPIO88 同时也是蓝色 LED 引脚，使用硬件 PWM 时
@@ -201,8 +201,8 @@ close(fd);
  *   OE=1 → 脉冲输出屏蔽
  *
  * 编译条件：
- *   CONFIG_LS2K300_PWM=y
- *   CONFIG_LS2K300_PWM2=y
+ *   CONFIG_LS2K0300_PWM=y
+ *   CONFIG_LS2K0300_PWM2=y
  ****************************************************************************/
 
 /****************************************************************************

@@ -27,8 +27,8 @@
 
 ### 2.1 引脚复用
 
-在 `nuttx/boards/loongarch/ls2k300/hummingbird-ls2k300/src/ls2k300_bringup.c` 的
-`ls2k300_hardware_init()` 中添加：
+在 `nuttx/boards/loongarch/ls2k0300/hummingbird-ls2k0300/src/ls2k0300_bringup.c` 的
+`ls2k0300_hardware_init()` 中添加：
 
 ```c
 /* BUZZER: GPIO75 → GPIO */
@@ -37,11 +37,11 @@ ls_pinmux_pin_setup(75, LS_PINMUX_MODE_AS_GPIO);
 
 ### 2.2 Kconfig 使能
 
-在 `nuttx/boards/loongarch/ls2k300/hummingbird-ls2k300/configs/nsh/defconfig` 中添加：
+在 `nuttx/boards/loongarch/ls2k0300/hummingbird-ls2k0300/configs/nsh/defconfig` 中添加：
 
 ```
-CONFIG_LS2K300_GPIO=y
-CONFIG_LS2K300_PINCTRL=y
+CONFIG_LS2K0300_GPIO=y
+CONFIG_LS2K0300_PINCTRL=y
 ```
 
 > 这两个配置通常已默认启用（LED/KEY 测试也需要），无需额外添加。
@@ -204,11 +204,11 @@ void play_twinkle(int fd)
  *
  * GPIO 蜂鸣器驱动模板（无源蜂鸣器，GPIO 方波驱动）
  *
- * Hummingbird 2K300 板蜂鸣器引脚：
+ * Hummingbird 2K0300 板蜂鸣器引脚：
  *   - BUZZER: GPIO75 (GPIO 输出)
  *
  * 使用说明：
- *   1. 引脚复用在 ls2k300_bringup.c 中已配置
+ *   1. 引脚复用在 ls2k0300_bringup.c 中已配置
  *   2. 无源蜂鸣器需要 GPIO 翻转产生方波，频率决定音调
  ****************************************************************************/
 
@@ -222,7 +222,7 @@ void play_twinkle(int fd)
 #include <nuttx/arch.h>
 #include <nuttx/ioexpander/gpio.h>
 
-/* 已配置为 Hummingbird 2K300 板实际值 */
+/* 已配置为 Hummingbird 2K0300 板实际值 */
 
 #define BUZZER_PIN          75              /* 蜂鸣器 GPIO 引脚 */
 

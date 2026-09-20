@@ -2,7 +2,7 @@
 
 > 2026 首届 openvela AI 硬件开发者大赛 ｜ 队伍编号 **479** ｜ 队伍名称 **longxindui**
 
-## 〇、公共仓库改动与 Fork
+## 〇、公共仓库改动 Fork 地址与板卡购买链接
 
 本作品涉及对 openvela **公共仓库**的改动（新增 LoongArch 架构支持等），按大赛规则 fork 后在各自仓库提交 PR。共改动 4 个公共仓库，fork 地址如下（均基于 `dev-ls` 分支开发）：
 
@@ -28,7 +28,7 @@
 - **全新架构移植**：在 NuttX 中新增 `arch/loongarch/`、`boards/loongarch/` 与 `libc/machine/loongarch/` 支持，修复 libcxx 原子操作，从零完成 2K0300 的启动、串口与最小系统移植，可从uboot启动系统。
 - **外设驱动全覆盖**：测试套件覆盖 GPIO（LED/按键/蜂鸣器）、硬件 PWM（呼吸灯）、硬件 UART、硬件 SPI（ADC、SPI Flash）、I2C（OLED、光照传感器、EEPROM）以及 Thermal/Watchdog/RTC 等共 13 项测试。
 - **系统级测试通过**：cmocka 内存管理等 openvela 通用测试在真机全部通过，结果与串口日志见 `evidence/`。
-- **经验沉淀为 Skill**：开发中踩坑沉淀为自建 Skill `skills/loongarch-2k300-openvela-driver/`，包含各外设驱动模板、引脚表、寄存器表与自动检查脚本。
+- **经验沉淀为 Skill**：开发中踩坑沉淀为自建 Skill `skills/loongarch-2k0300-openvela-driver/`，包含各外设驱动模板、引脚表、寄存器表与自动检查脚本。
 - **提供预编译产物**：`prebuilt/nuttx.bin` 可直接烧录验证。
 
 ## 二、选题方向
@@ -59,7 +59,7 @@ contest2026_479_longxindui/
 │   └── nuttx.bin                              预编译固件（可直接烧录验证）
 ├── docs/                            技术报告、烧录方法（含截图）、驱动测试说明、原理图、引脚复用图、用户手册
 ├── evidence/                        真机照片与 openvela 通用测试结果
-├── skills/loongarch-2k300-openvela-driver/    自建驱动开发 Skill（模板/引脚表/检查脚本）
+├── skills/loongarch-2k0300-openvela-driver/    自建驱动开发 Skill（模板/引脚表/检查脚本）
 └── logs/                            AI Coding 对话日志（组委会要求格式）
 ```
 
@@ -153,7 +153,7 @@ ls_driver_test -h    # 查看帮助
 - **需求拆解与方案设计**：与 AI 梳理 LoongArch 架构在 NuttX 中的接入点（arch / boards / libc 三层），规划 2K0300 外设的驱动模式（VFS 设备节点 + pinctrl 复用）。
 - **编码**：测试套件各外设驱动由 AI 按"模板 → 填引脚/寄存器 → 调试"的方式生成，配合龙芯用户手册与扩展板原理图核对寄存器地址与时序。
 - **调试**：AI 直接分析串口日志与栈回溯定位问题（如 SPI DR 寄存器位宽、EOT 等待、pinctrl 二次覆盖引脚配置等平台特有陷阱）。
-- **经验固化**：AI 将踩坑沉淀为自建 Skill `skills/loongarch-2k300-openvela-driver/`——含各外设完整驱动模板、硬件规格表、Kconfig 依赖表与自动检查脚本，后续同类驱动可直接复用。
+- **经验固化**：AI 将踩坑沉淀为自建 Skill `skills/loongarch-2k0300-openvela-driver/`——含各外设完整驱动模板、硬件规格表、Kconfig 依赖表与自动检查脚本，后续同类驱动可直接复用。
 - **文档**：技术报告（`docs/基于龙芯 2K0300 的 openvela 系统移植-技术报告.pdf`）与本 README 均由 AI 依据开发记录整理生成。
 
 完整 AI 对话日志见 `logs/` 目录（按组委会要求的 `manifest.json` + `<日期>/<工具>__<会话id>.jsonl` 结构组织）。

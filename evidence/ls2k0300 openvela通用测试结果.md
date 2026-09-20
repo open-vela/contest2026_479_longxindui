@@ -4539,7 +4539,7 @@ File system tests done... OK: 20, FAILED: 0
 
 ##### fstest 启用配置：
 
-在nuttx/boards/loongarch/ls2k300/hummingbird\-ls2k300/configs/nsh/defconfig中添加：
+在nuttx/boards/loongarch/ls2k0300/hummingbird\-ls2k300/configs/nsh/defconfig中添加：
 
 CONFIG\_FS\_TMPFS=y
 

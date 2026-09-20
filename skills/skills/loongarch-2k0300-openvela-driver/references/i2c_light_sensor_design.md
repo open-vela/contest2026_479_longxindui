@@ -14,8 +14,8 @@
 
 ### 2.1 引脚复用
 
-在 `nuttx/boards/loongarch/ls2k300/hummingbird-ls2k300/src/ls2k300_bringup.c` 的
-`ls2k300_hardware_init()` 中添加：
+在 `nuttx/boards/loongarch/ls2k0300/hummingbird-ls2k0300/src/ls2k0300_bringup.c` 的
+`ls2k0300_hardware_init()` 中添加：
 
 ```c
 /* I2C1: GPIO50(SDA)/GPIO51(SCL) → MAIN_FUNC */
@@ -25,11 +25,11 @@ ls_pinmux_pin_setup(51, LS_PINMUX_MODE_AS_MAIN_FUNC);
 
 ### 2.2 Kconfig 使能
 
-在 `nuttx/boards/loongarch/ls2k300/hummingbird-ls2k300/configs/nsh/defconfig` 中添加：
+在 `nuttx/boards/loongarch/ls2k0300/hummingbird-ls2k0300/configs/nsh/defconfig` 中添加：
 
 ```
-CONFIG_LS2K300_I2C=y
-CONFIG_LS2K300_I2C1=y
+CONFIG_LS2K0300_I2C=y
+CONFIG_LS2K0300_I2C1=y
 ```
 
 ## 3. I2C 总线配置
@@ -229,8 +229,8 @@ int bh1750_read_continuous(int fd, uint16_t *lux)
    - 确认换算公式正确（lux = raw * 1000 / 12）
 
 4. **设备节点不存在（open /dev/i2c1 失败）**：
-   - 检查 defconfig 中 `CONFIG_LS2K300_I2C=y`、`CONFIG_LS2K300_I2C1=y`、`CONFIG_I2C_DRIVER=y` 是否启用
-   - 检查 bringup.c 中是否调用了 `ls2k300_i2c_initialize(1)`
+   - 检查 defconfig 中 `CONFIG_LS2K0300_I2C=y`、`CONFIG_LS2K0300_I2C1=y`、`CONFIG_I2C_DRIVER=y` 是否启用
+   - 检查 bringup.c 中是否调用了 `ls2k0300_i2c_initialize(1)`
 
 
 ---
@@ -248,12 +248,12 @@ int bh1750_read_continuous(int fd, uint16_t *lux)
  *
  * I2C 光照传感器驱动模板（以 BH1750 为范例）
  *
- * Hummingbird 2K300 板 I2C1 引脚：
+ * Hummingbird 2K0300 板 I2C1 引脚：
  *   - I2C1_SDA: GPIO50 (MAIN_FUNC)
  *   - I2C1_SCL: GPIO51 (MAIN_FUNC)
  *
  * 使用说明：
- *   1. 引脚复用在 ls2k300_bringup.c 中已配置
+ *   1. 引脚复用在 ls2k0300_bringup.c 中已配置
  *   2. 根据传感器 datasheet 调整命令和读取流程
  ****************************************************************************/
 
@@ -268,7 +268,7 @@ int bh1750_read_continuous(int fd, uint16_t *lux)
 #include <nuttx/i2c/i2c_master.h>
 #include <nuttx/arch.h>
 
-/* 已配置为 Hummingbird 2K300 板实际值 */
+/* 已配置为 Hummingbird 2K0300 板实际值 */
 
 #define I2C_BUS         "/dev/i2c1"         /* I2C1 总线，GPIO50(SDA)/GPIO51(SCL) */
 #define SLAVE_ADDR      0x23                /* BH1750 默认 7-bit 地址 */

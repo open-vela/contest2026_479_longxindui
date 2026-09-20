@@ -73,7 +73,7 @@ esac
 #    排除 "double-layer"/"double-buffered" 这类注释里的连词：要求 float/double
 #    后紧跟非连字符/非字母数字字符（即真正的类型用法）。
 if grep -qE "\b(float|double)\b[^-A-Za-z0-9]" "$SRC"; then
-  echo "WARN: 检测到 float/double，2K300 平台应使用整数运算（duty 0~65536 固定点）" >&2
+  echo "WARN: 检测到 float/double，2K0300 平台应使用整数运算（duty 0~65536 固定点）" >&2
   WARN_COUNT=$((WARN_COUNT + 1))
 fi
 
