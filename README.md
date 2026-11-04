@@ -26,7 +26,7 @@
 
 本作品将 **OpenVela（NuttX RTOS）** 完整移植到**龙芯 LoongArch 架构 2K0300 处理器**（LOONG-HAT 开发板 + 扩展板）上，交付一套覆盖全部常用外设的驱动测试套件 `ls_driver_test`，并在其上跑通一套**端侧 AI 语音助手**（`ai_agent` + LCD 图形面板 `ls_lvgl` + ES8388 音频通路）。
 
-**要解决的问题**：OpenVela 此前不支持 LoongArch 架构，本作品为其补齐了 LoongArch 的内核架构支持、板级支持包（BSP）与片上/板载外设驱动，让 OpenVela 可以在国产龙芯处理器上运行，并通过可复现的测试用例逐项验证驱动正确性。
+**要解决的问题**：OpenVela 此前不支持 LoongArch 架构，本作品为其增加了 LoongArch 的内核架构支持、板级支持包（BSP）与片上/板载外设驱动，让 OpenVela 可以在国产龙芯处理器上运行，并通过可复现的测试用例逐项验证驱动正确性。
 
 **亮点**：
 
@@ -42,7 +42,7 @@
 
 **新硬件适配**。
 
-理由：本作品的核心是为 openvela 补齐一个此前不支持的处理器架构（LoongArch 2K0300）——从内核架构移植、板级 BSP 到外设驱动逐层打通，正是"新硬件适配"赛道的目标场景。
+理由：本作品的核心是为 openvela 添加一个此前不支持的处理器架构（LoongArch 2K0300）——从内核架构移植、板级 BSP 到外设驱动逐层打通，正是"新硬件适配"赛道的目标场景。
 
 ## 三、目录结构
 
@@ -98,7 +98,7 @@ repo sync -c -j8
 sudo tar xf loongarch64-linux-gnu-gcc13.3.tar.gz -C /opt
 ```
 
-再复制编译脚本：
+再复制编译脚本（在 openvela 根目录进行 ）：
 
 ```bash
 cp vendor/loongson/help.sh .
