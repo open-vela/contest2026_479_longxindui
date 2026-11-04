@@ -92,8 +92,11 @@ PWM 输出初始为低电平。计数器从 Full_buffer 值开始递减：
 在驱动中：
 - `full_buffer = clock_freq × frequency / 1000000`
   - 例：200MHz × 1kHz / 1000000 = 200000
-- `low_buffer = full_buffer × duty / 65536`
-  - duty 范围 0~65536（NuttX 固定点格式，65536=100%）
+- `low_buffer = full_buffer - (full_buffer × duty / 65536)`
+  - duty 范围 0~65536（NuttX 固定点格式，65536=100%），语义是**高电平占比**
+  - 因为上面 `占空比 = (Full_buffer - Low_buffer) / Full_buffer`，所以 Low 是 duty 的**补数**。
+    写成 `low_buffer = full_buffer × duty / 65536` 会把输出反相：**0% 最亮、100% 最暗**
+  - 例：duty=0 → low=full（全暗）；duty=65536 → low=0（全亮）
 
 ## 4. PWM CTRL 寄存器关键位
 
