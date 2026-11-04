@@ -16,8 +16,16 @@
     
     apps:
     	+examples/ls_driver_test/
+    	+examples/ls_lvgl/
     	+system/ls2k0300_power/
-    	
+    
+    packages/ai_agent:
+    	+src/tools/tool_2k0300.*
+    	+src/voice/
+    	+agent_skills/board-control.md
+    	src/llm/
+    	src/core/
+    
     vendor:
     	+loongson/
          
@@ -43,4 +51,7 @@
   
   <remove-project name="vendor" />
   <project path="vendor" name="vendor" remote="my_github" revision="dev-ls" />
+  
+  <remove-project name="packages_ai_agent" />
+  <project path="packages/ai_agent" name="packages_ai_agent" remote="my_github" revision="dev-ls2" />
 </manifest>
