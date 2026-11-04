@@ -4,7 +4,7 @@
 
 ## 〇、公共仓库改动 Fork 地址与板卡购买链接
 
-本作品涉及对 openvela **公共仓库**的改动（新增 LoongArch 架构支持等），按大赛规则 fork 后在各自仓库提交 PR。共改动 4 个公共仓库，fork 地址如下（均基于 `dev-ls` 分支开发）：
+本作品涉及对 openvela **公共仓库**的改动（新增 LoongArch 架构支持、2K0300 外设驱动与端侧 AI 语音助手适配等），按大赛规则 fork 后在各自仓库提交 PR。共涉及 5 个公共仓库，fork 地址如下：
 
 | 公共仓库 | 本队 Fork 地址 |
 |---|---|
@@ -12,21 +12,28 @@
 | `nuttx-apps` | https://github.com/lingluan9/nuttx-apps |
 | `vendor` | https://github.com/lingluan9/vendor |
 | `nuttx_libs_libxx_libcxx` | https://github.com/lingluan9/nuttx_libs_libxx_libcxx |
+| `packages_ai_agent` | https://github.com/lingluan9/packages_ai_agent |
+
+> 开发分支：`nuttx`、`nuttx-apps`、`vendor`、`nuttx_libs_libxx_libcxx` 为 `dev-ls`，`packages_ai_agent` 为 `dev-ls2`。
 
 各仓库的具体替换配置与改动清单见本仓 `contest2026_479_longxindui.xml`。
 
 **硬件采购**：本作品使用的开发板为**先锋派 2K0300**（LOONG-HAT），需购买 **先锋派 + 拓展版 + OLED** 组合（OLED 屏与拓展版上的传感器、Flash、EEPROM 等外设接口配套，驱动测试套件依赖这些硬件），淘宝购买链接：https://item.taobao.com/item.htm?ft=t&id=1014023893734&skuId=6186298055402&spm=a21dvs.23580594.0.0.52d9645e1Xrwc3
 
+**屏幕**：AI 语音助手的人机界面跑在 **800×480 RGB 接口 LCD 屏**（M-L1/L2）上，实拍见 `evidence/`；只验证驱动测试套件的话 OLED 屏即可，不需要这块 LCD。
+
 ## 一、作品简介
 
-本作品将 **OpenVela（NuttX RTOS）** 完整移植到**龙芯 LoongArch 架构 2K0300 处理器**（LOONG-HAT 开发板 + 扩展板）上，并交付一套覆盖全部常用外设的驱动测试套件 `ls_driver_test`。
+本作品将 **OpenVela（NuttX RTOS）** 完整移植到**龙芯 LoongArch 架构 2K0300 处理器**（LOONG-HAT 开发板 + 扩展板）上，交付一套覆盖全部常用外设的驱动测试套件 `ls_driver_test`，并在其上跑通一套**端侧 AI 语音助手**（`ai_agent` + LCD 图形面板 `ls_lvgl` + ES8388 音频通路）。
 
 **要解决的问题**：OpenVela 此前不支持 LoongArch 架构，本作品为其补齐了 LoongArch 的内核架构支持、板级支持包（BSP）与片上/板载外设驱动，让 OpenVela 可以在国产龙芯处理器上运行，并通过可复现的测试用例逐项验证驱动正确性。
 
 **亮点**：
 
 - **全新架构移植**：在 NuttX 中新增 `arch/loongarch/`、`boards/loongarch/` 与 `libc/machine/loongarch/` 支持，修复 libcxx 原子操作，从零完成 2K0300 的启动、串口与最小系统移植，可从uboot启动系统。
-- **外设驱动全覆盖**：测试套件覆盖 GPIO（LED/按键/蜂鸣器）、硬件 PWM（呼吸灯）、硬件 UART、硬件 SPI（ADC、SPI Flash）、I2C（OLED、光照传感器、EEPROM）以及 Thermal/Watchdog/RTC 等共 13 项测试。
+- **外设驱动全覆盖**：测试套件覆盖 GPIO（LED/按键/蜂鸣器）、硬件 PWM（呼吸灯）、硬件 UART、硬件 SPI（ADC、SPI Flash）、I2C（OLED、光照传感器、EEPROM）以及 Thermal/Watchdog/RTC 等共 13 项外设测试，另带 LCD 设备状态面板。
+- **端侧 AI 语音助手**：在 2K0300 上跑通 Vela AI Agent——DeepSeek 等大模型的工具调用 + 火山引擎 ASR/TTS 语音链路，并通过自研板卡工具（LED/PWM/蜂鸣器/按键/温度/ADC/光照/OLED）让大模型直接操控板上外设。
+- **LCD 图形人机界面**：`apps/examples/ls_lvgl/` 基于 LVGL 在 800×480 RGB 屏上做设备状态面板与 AI 字幕，长按 KEY1 即可按住说话（push-to-talk），面板状态与 Agent 的外设操作实时同步。
 - **系统级测试通过**：cmocka 内存管理等 openvela 通用测试在真机全部通过，结果与串口日志见 `evidence/`。
 - **经验沉淀为 Skill**：开发中踩坑沉淀为自建 Skill `skills/loongarch-2k0300-openvela-driver/`，包含各外设驱动模板、引脚表、寄存器表与自动检查脚本。
 - **提供预编译产物**：`prebuilt/nuttx.bin` 可直接烧录验证。
@@ -39,14 +46,16 @@
 
 ## 三、目录结构
 
-本仓是 manifest 仓：`repo sync` 后，`nuttx/`、`apps/`、`vendor/` 会按 `contest2026_479_longxindui.xml` 的配置替换为本队的 fork（`dev-ls` 分支），**作品代码全部位于这三个仓库内**：
+本仓是 manifest 仓：`repo sync` 后，`nuttx/`、`apps/`、`vendor/`、`packages/ai_agent/` 会按 `contest2026_479_longxindui.xml` 的配置替换为本队的 fork，**作品代码全部位于这些仓库内**：
 
 | 位置 | 内容 |
 |---|---|
 | `nuttx/arch/loongarch/`、`nuttx/boards/loongarch/` | LoongArch 架构支持与 2K0300 板级支持包 |
 | `nuttx/libs/libc/machine/loongarch/` | LoongArch libc 机器相关实现 |
 | `apps/examples/ls_driver_test/` | 外设驱动测试套件（详见 `docs/驱动测试说明.md`） |
+| `apps/examples/ls_lvgl/` | LCD 设备状态面板与 AI 字幕（LVGL） |
 | `apps/system/ls2k0300_power/` | 2K0300 电源管理 |
+| `packages/ai_agent/` | 端侧 AI Agent（语音链路、LLM、板卡外设工具） |
 | `vendor/loongson/` | 龙芯编译脚本（`help.sh` / `set_env.sh`） |
 
 本仓各目录：
@@ -124,7 +133,7 @@ ls_driver_test -h    # 查看帮助
 
 | 选项 | 说明 | 所需外设 |
 |------|------|----------|
-| `led` | LED 闪烁（GPIO72/73，低电平点亮） | 板载 LED |
+| `led` | LED 闪烁（GPIO72/73，高电平点亮） | 板载 LED |
 | `key` | 按键 + LED（KEY1/KEY2 翻转红/绿灯，30 秒） | 按键 |
 | `oled` | SSD1306 OLED 显示（I2C1，0x3C） | OLED 屏 |
 | `thermal` | 片上温度传感器 | — |
@@ -137,8 +146,10 @@ ls_driver_test -h    # 查看帮助
 | `buzzer` | 蜂鸣器 + 按键控制 | 蜂鸣器 |
 | `spiflash` | SPI Flash 存储光照数据（按键控制） | SPI Flash + BH1750 |
 | `uart2` | UART2 回显（TX=GPIO44 / RX=GPIO45） | 串口线 |
+| `lcd` | LCD 设备状态面板（`lcd [period_ms]` / `lcd dump`） | LCD 屏 |
+| `all` | 依次执行默认序列（无参数时的默认行为） | — |
 
-> 注意：`sensor`、`eeprom`、`buzzer`、`spiflash`、`uart2` 五项需要交互（按键/外接设备），不在默认序列中，必须显式传子命令运行。
+> 注意：`sensor`、`eeprom`、`buzzer`、`spiflash`、`uart2`、`lcd` 六项需要交互（按键/外接设备/长期运行），不在默认序列中，必须显式传子命令运行。
 
 每项测试的**工作原理、引脚连接、串口打印与预期现象**，逐项详见 `docs/驱动测试说明.md`；外设接线引脚与扩展板接口对照 `docs/2k0300引脚复用图.png` 与 `docs/ls2k0300loong-hat扩展板原理图.pdf`。
 
@@ -146,14 +157,44 @@ ls_driver_test -h    # 查看帮助
 
 除驱动测试外，本作品还通过了 openvela 通用系统测试（cmocka 内存管理等），指令、配置与完整串口日志见 `evidence/ls2k0300 openvela通用测试结果.md`。
 
+### 4.7 LCD 面板与 AI 语音助手
+
+`nsh` 下两个程序配合工作：`ls_lvgl` 是跑在 800×480 RGB 屏上的设备状态面板，`ai_agent` 是端侧 AI Agent，两者通过 Agent 的板卡工具联动。
+
+```bash
+ls_lvgl &    # 启动 LCD 面板（设备状态 + AI 字幕）
+ai_agent     # 启动 AI Agent
+```
+
+面板上半部分显示 LED / PWM / 蜂鸣器等执行器与温度 / 光照 / ADC 等传感器的实时状态，下半部分是 AI 字幕区（左侧 `AI AGENT / <状态>`，右侧回复文本），I2C1 上的 SSD1306 OLED 同步镜像。KEY2 移动选中项、KEY1 短按翻转选中行的执行器状态，**长按 KEY1 超过 500 ms 进入按住说话（push-to-talk）**，松开后走 ASR → LLM → TTS 的完整语音链路；面板状态与 Agent 的外设操作实时同步。
+
+首次使用需要配置大模型与语音接口密钥：
+
+| 命令 | 说明 |
+|------|------|
+| `set_llm <预设> <key>` | 设置 LLM 后端（DeepSeek / Kimi / 通义千问等） |
+| `set_volc_asr <api_key> [resource_id]` | 设置火山引擎 ASR（V3）密钥 |
+| `set_volc_key <api_key>` | 设置火山引擎 TTS 密钥 |
+| `set_volc_speaker <id>` | 设置 TTS 音色 |
+| `ask <问题>` | 文本对话，可自动触发工具调用 |
+| `voice_start` / `voice_stop` | 开启 / 关闭语音链路 |
+| `voice_test_asr` / `voice_test_tts` | 单独验证语音识别 / 合成 |
+
+Agent 可调用的板卡工具：`board_led`、`board_pwm`、`board_buzzer`、`board_key_read`、`board_thermal_read`、`board_adc_read`、`board_light_read`、`board_oled_show`。
+
+> 语音链路走 ES8388 编解码器（I2S + LSIA DMA），大模型与语音接口均为在线服务，需要板卡联网（板载 GMAC）。
+
 ## 五、AI Coding 使用说明
 
 本作品从架构移植调研、驱动编写到真机调试，全程与 AI 结对完成：
 
 - **需求拆解与方案设计**：与 AI 梳理 LoongArch 架构在 NuttX 中的接入点（arch / boards / libc 三层），规划 2K0300 外设的驱动模式（VFS 设备节点 + pinctrl 复用）。
+- **调研与方案论证**：与 AI 一起调研 LoongArch 平台上已有的 RTOS 移植，重点参考龙芯实验室（LoongsonLab）开源的 RT-Thread LoongArch 移植项目（https://github.com/LoongsonLab/rt-thread，分支 `rt-loongarch64-dev`），吸收其 `libcpu/loongarch/common` 的异常入口骨架（临时寄存器备份 → 全帧保存 → 统一分发 → `ertn` 返回）、EPC / PRMD 等 CSR 的保存恢复约定、基于 CPUCFG 的常频定时器频率测定与 TCFG 编程、LIOINTC / EIOINTC 中断控制器路由初始化，以及 DesignWare GMAC 的 DMA 描述符环与 MDIO 访问方式。
+- **参考但不照搬**：上述项目面向龙芯 2K1000LA，本作品面向 2K0300 蜂鸟板，寄存器映射、中断路由、时钟树与引脚复用均按 2K0300 重新定义；驱动层由 RT-Thread 的 `rt_device` 框架改写为 NuttX lower-half 驱动 + POSIX 设备节点，构建由 SCons 改为 CMake / Kconfig，以太网未沿用其 synopGMAC 驱动栈而是实现最小寄存器级 GMAC 并编写 D-cache 维护汇编保证 DMA 一致性。详见技术报告第二节。
 - **编码**：测试套件各外设驱动由 AI 按"模板 → 填引脚/寄存器 → 调试"的方式生成，配合龙芯用户手册与扩展板原理图核对寄存器地址与时序。
 - **调试**：AI 直接分析串口日志与栈回溯定位问题（如 SPI DR 寄存器位宽、EOT 等待、pinctrl 二次覆盖引脚配置等平台特有陷阱）。
+- **端侧智能体联调**：板卡外设工具、火山引擎语音链路与 LVGL 面板的联动同样由 AI 参与设计与真机联调，定位过录音断续、ASR 会话复用与声道漂移、DeepSeek DSML 工具调用解析、I2S/ES8388 采集通路等问题。
 - **经验固化**：AI 将踩坑沉淀为自建 Skill `skills/loongarch-2k0300-openvela-driver/`——含各外设完整驱动模板、硬件规格表、Kconfig 依赖表与自动检查脚本，后续同类驱动可直接复用。
-- **文档**：技术报告（`docs/基于龙芯 2K0300 的 openvela 系统移植-技术报告.pdf`）与本 README 均由 AI 依据开发记录整理生成。
+- **文档**：技术报告（`docs/龙芯2K0300的openvela系统移植-技术报告.pdf`）与本 README 均由 AI 依据开发记录整理生成。
 
 完整 AI 对话日志见 `logs/` 目录（按组委会要求的 `manifest.json` + `<日期>/<工具>__<会话id>.jsonl` 结构组织）。
