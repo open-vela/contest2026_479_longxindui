@@ -45,6 +45,7 @@
 | C10 | 基于模板而非从零编写 | 引用对应 reference 的完整模板源码 |
 | C11 | UART 走 /dev/ttySn + termios（UART 外设） | 用 `open`/`read`/`write` + `tcsetattr`/`cfsetspeed`，不裸写 16550 寄存器 |
 | C12 | UART 轮询退出用 O_NONBLOCK | echo 循环同时轮询按键时，串口须 `O_NONBLOCK` 打开否则 read 阻塞 |
+| C13 | PWM duty 极性取补 | `low_buffer = full - full*duty/65536`；直接赋 duty 会反相（0% 最亮、100% 最暗） |
 
 ## 平台特有陷阱检查
 
